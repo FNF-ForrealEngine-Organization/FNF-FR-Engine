@@ -62,37 +62,37 @@ class CustomSubstate extends MusicBeatSubstate
 	override function create()
 	{
 		instance = this;
-		PlayState.instance.setOnHScript('customSubstate', instance);
+		GlobalScriptManager.setOnHScript('customSubstate', instance);
 
 
-		PlayState.instance.callOnScripts('onCustomSubstateCreate', [name]);
+		GlobalScriptManager.callOnScripts('onCustomSubstateCreate', [name]);
 		super.create();
-		PlayState.instance.callOnScripts('onCustomSubstateCreatePost', [name]);
+		GlobalScriptManager.callOnScripts('onCustomSubstateCreatePost', [name]);
 	}
 	
 	public function new(name:String)
 	{
 		CustomSubstate.name = name;
-		PlayState.instance.setOnHScript('customSubstateName', name);
+		GlobalScriptManager.setOnHScript('customSubstateName', name);
 		super();
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 	}
 	
 	override function update(elapsed:Float)
 	{
-		PlayState.instance.callOnScripts('onCustomSubstateUpdate', [name, elapsed]);
+		GlobalScriptManager.callOnScripts('onCustomSubstateUpdate', [name, elapsed]);
 		super.update(elapsed);
-		PlayState.instance.callOnScripts('onCustomSubstateUpdatePost', [name, elapsed]);
+		GlobalScriptManager.callOnScripts('onCustomSubstateUpdatePost', [name, elapsed]);
 	}
 
 	override function destroy()
 	{
-		PlayState.instance.callOnScripts('onCustomSubstateDestroy', [name]);
+		GlobalScriptManager.callOnScripts('onCustomSubstateDestroy', [name]);
 		instance = null;
 		name = 'unnamed';
 
-		PlayState.instance.setOnHScript('customSubstate', null);
-		PlayState.instance.setOnHScript('customSubstateName', name);
+		GlobalScriptManager.setOnHScript('customSubstate', null);
+		GlobalScriptManager.setOnHScript('customSubstateName', name);
 		super.destroy();
 	}
 }

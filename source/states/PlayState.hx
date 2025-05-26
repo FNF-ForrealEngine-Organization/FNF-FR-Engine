@@ -14,8 +14,6 @@ import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;
 #end
 
-import psychlua.GlobalScriptManager;
-
 import backend.Highscore;
 import backend.StageData;
 import backend.WeekData;
@@ -1751,8 +1749,8 @@ class PlayState extends MusicBeatState
 				notes.insert(0, dunceNote);
 				dunceNote.spawned = true;
 
-				GlobalScriptManager.GlobalScriptManager.callOnLuas('onSpawnNote', [notes.members.indexOf(dunceNote), dunceNote.noteData, dunceNote.noteType, dunceNote.isSustainNote, dunceNote.strumTime]);
-				GlobalScriptManager.GlobalScriptManager.callOnHScript('onSpawnNote', [dunceNote]);
+				GlobalScriptManager.callOnLuas('onSpawnNote', [notes.members.indexOf(dunceNote), dunceNote.noteData, dunceNote.noteType, dunceNote.isSustainNote, dunceNote.strumTime]);
+				GlobalScriptManager.callOnHScript('onSpawnNote', [dunceNote]);
 
 				var index:Int = unspawnNotes.indexOf(dunceNote);
 				unspawnNotes.splice(index, 1);

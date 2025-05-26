@@ -14,6 +14,12 @@ import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;
 #end
 
+#if (!flash && sys)
+import shaders.ErrorHandledShader.ErrorHandledRuntimeShader;
+#end
+
+using StringTools;
+
 // manager and execute all scripts in the engine
 class GlobalScriptManager {
     #if LUA_ALLOWED 
@@ -208,8 +214,127 @@ class GlobalScriptManager {
 		#end
 	}
 
-    public static function create():Void {
+    public static function setStateScript(nameState:String, ?variable:Dynamic) {
+        #if LUA_ALLOWED
+        startLuasNamed('states/' + nameState + '.lua');
+        setOnLuas('stateName', nameState);
+        if(variable != null)
+            setOnLuas('game', variable);
+        #end
 
+        #if HSCRIPT_ALLOWED
+        startHScriptsNamed('states/' + nameState + '.hx');
+        setOnHScript('stateName', nameState);
+        if(variable != null)
+            setOnHScript('game', variable);
+        #end
+    }
+
+    public static function create():Void {
+        #if LUA_ALLOWED
+		for (lua in luaArray)
+		{
+			lua.call('onCreate', []);
+		}
+		#end
+
+		#if HSCRIPT_ALLOWED
+		for (script in hscriptArray)
+			if(script != null)
+			{
+				if(script.exists('onCreate')) script.call('onCreate');
+			}
+		#end
+    }
+
+    public static function createPost():Void {
+        #if LUA_ALLOWED
+		for (lua in luaArray)
+		{
+			lua.call('onCreatePost', []);
+		}
+		#end
+
+		#if HSCRIPT_ALLOWED
+		for (script in hscriptArray)
+			if(script != null)
+			{
+				if(script.exists('onCreatePost')) script.call('onCreatePost');
+			}
+		#end
+    }
+    
+    public static function update(elapsed:Float):Void {
+        #if LUA_ALLOWED
+		for (lua in luaArray)
+		{
+			lua.call('onUpdate', [elapsed]);
+		}
+		#end
+
+		#if HSCRIPT_ALLOWED
+		for (script in hscriptArray)
+			if(script != null)
+			{
+				if(script.exists('onUpdate')) script.call('onUpdate', [elapsed]);
+			}
+		#end
+    }
+
+    public static function updatePost(elapsed:Float):Void {
+        #if LUA_ALLOWED
+        for (lua in luaArray)
+        {
+            lua.call('onUpdatePost', [elapsed]);
+        }
+        #end
+        #if HSCRIPT_ALLOWED
+        for (script in hscriptArray)
+            if(script != null)
+            {
+                if(script.exists('onUpdatePost')) script.call('onUpdatePost', [elapsed]);
+            }
+        #end
+    }
+
+    public static function beatHit(curBeat:Int, curDecBeat:Float) {
+        #if LUA_ALLOWED
+        for (lua in luaArray)
+        {
+            lua.call('onBeatHit', []);
+            lua.set('curBeat', curBeat);
+            lua.set('curDecBeat', curDecBeat);
+        }
+        #end
+        #if HSCRIPT_ALLOWED
+        for (script in hscriptArray)
+            if(script != null)
+            {
+                if(script.exists('onBeatHit')) script.call('onBeatHit', []);
+                setOnHScript('curBeat', curBeat);
+                setOnHScript('curDecBeat', curDecBeat);
+            }
+        #end
+    }
+
+    public static function stepHit(curStep:Int, curDecStep:Float) {
+        #if LUA_ALLOWED
+        for (lua in luaArray)
+        {
+            lua.call('onStepHit', []);
+            lua.set('curStep', curStep);
+            lua.set('curDecStep', curDecStep);
+        }
+        #end
+        #if HSCRIPT_ALLOWED
+        for (script in hscriptArray)
+            if(script != null)
+            {
+                if(script.exists('onStepHit')) script.call('onStepHit', []);
+                setOnHScript('curStep', curStep);
+                setOnHScript('curDecStep', curDecStep);
+            }
+        #end
     }
 
     public static function destroy():Void {
@@ -234,4 +359,74 @@ class GlobalScriptManager {
 		hscriptArray = null;
 		#end
     }
+
+    #if (!flash && sys)
+	public var runtimeShaders:Map<String, Array<String>> = new Map<String, Array<String>>();
+	#end
+	public function createRuntimeShader(shaderName:String):ErrorHandledRuntimeShader
+	{
+		#if (!flash && sys)
+		if(!ClientPrefs.data.shaders) return new ErrorHandledRuntimeShader(shaderName);
+
+		if(!runtimeShaders.exists(shaderName) && !initLuaShader(shaderName))
+		{
+			FlxG.log.warn('Shader $shaderName is missing!');
+			return new ErrorHandledRuntimeShader(shaderName);
+		}
+
+		var arr:Array<String> = runtimeShaders.get(shaderName);
+		return new ErrorHandledRuntimeShader(shaderName, arr[0], arr[1]);
+		#else
+		FlxG.log.warn("Platform unsupported for Runtime Shaders!");
+		return null;
+		#end
+	}
+
+	public function initLuaShader(name:String, ?glslVersion:Int = 120)
+	{
+		if(!ClientPrefs.data.shaders) return false;
+
+		#if (!flash && sys)
+		if(runtimeShaders.exists(name))
+		{
+			FlxG.log.warn('Shader $name was already initialized!');
+			return true;
+		}
+
+		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'shaders/'))
+		{
+			var frag:String = folder + name + '.frag';
+			var vert:String = folder + name + '.vert';
+			var found:Bool = false;
+			if(FileSystem.exists(frag))
+			{
+				frag = File.getContent(frag);
+				found = true;
+			}
+			else frag = null;
+
+			if(FileSystem.exists(vert))
+			{
+				vert = File.getContent(vert);
+				found = true;
+			}
+			else vert = null;
+
+			if(found)
+			{
+				runtimeShaders.set(name, [frag, vert]);
+				//trace('Found shader $name!');
+				return true;
+			}
+		}
+			#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+			MusicBeatState.getState().addTextToDebug('Missing shader $name .frag AND .vert files!', FlxColor.RED);
+			#else
+			FlxG.log.warn('Missing shader $name .frag AND .vert files!');
+			#end
+		#else
+		FlxG.log.warn('This platform doesn\'t support Runtime Shaders!');
+		#end
+		return false;
+	}
 }
