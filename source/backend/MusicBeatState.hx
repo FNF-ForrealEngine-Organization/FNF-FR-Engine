@@ -48,10 +48,8 @@ class MusicBeatState extends FlxState
 	}
 	#end
 
-	public function setStateScript():Void {
-		trace("Name State: " + Type.getClassName(Type.getClass(this)).split('.').pop());
+	public function setStateScript():Void
 		GlobalScriptManager.setStateScript(Type.getClassName(Type.getClass(this)).split('.').pop(), this);
-	}
 
 	override function create() {
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;

@@ -214,21 +214,77 @@ class GlobalScriptManager {
 		#end
 	}
 
-    public static function setStateScript(nameState:String, ?variable:Dynamic) {
-        #if LUA_ALLOWED
-        startLuasNamed('states/' + nameState + '.lua');
-        setOnLuas('stateName', nameState);
-        if(variable != null)
-            setOnLuas('game', variable);
-        #end
+	public static function setStateScript(nameState:String, ?variable:Dynamic) {
+		// Remove scripts from other states first
+		removeStateScripts(nameState);
+		
+		// Only create new scripts if they don't exist for current state
+		if (!hasStateScript(nameState)) {
+			#if LUA_ALLOWED
+			startLuasNamed('states/' + nameState + '.lua');
+			setOnLuas('stateName', nameState);
+			if(variable != null)
+				setOnLuas('game', variable);
+			#end
 
-        #if HSCRIPT_ALLOWED
-        startHScriptsNamed('states/' + nameState + '.hx');
-        setOnHScript('stateName', nameState);
-        if(variable != null)
-            setOnHScript('game', variable);
-        #end
-    }
+			#if HSCRIPT_ALLOWED
+			startHScriptsNamed('states/' + nameState + '.hx');
+			setOnHScript('stateName', nameState);
+			if(variable != null)
+				setOnHScript('game', variable);
+			#end
+		}
+	}
+
+	public static function hasStateScript(nameState:String):Bool {
+		#if LUA_ALLOWED
+		for (lua in luaArray)
+		{
+			if(lua.scriptName == Paths.getPath('states/' + nameState + '.lua'))
+				return true;
+		}
+		#end
+		#if HSCRIPT_ALLOWED
+		for (script in hscriptArray)
+		{
+			if(script.origin == Paths.getPath('states/' + nameState + '.hx'))
+				return true;
+		}
+		#end
+		return false;
+	}
+
+	private static function removeStateScripts(currentState:String):Void {
+		#if LUA_ALLOWED
+		var i:Int = 0;
+		while (i < luaArray.length)
+		{
+			var lua:FunkinLua = luaArray[i];
+			if(lua.scriptName.contains('states/') && !lua.scriptName.contains('states/' + currentState))
+			{
+				lua.call('onDestroy', []);
+				lua.stop();
+				luaArray.remove(lua);
+				FunkinLua.customFunctions.remove(lua.scriptName);
+			}
+			else
+				i++;
+		}
+		var i:Int = 0;
+		while (i < hscriptArray.length)
+		{
+			var script:HScript = hscriptArray[i];
+			if(script.origin.contains('states/') && !script.origin.contains('states/' + currentState))
+			{
+				if(script.exists('onDestroy')) script.call('onDestroy');
+				script.destroy();
+				hscriptArray.remove(script);
+			}
+			else
+				i++;
+		}
+		#end
+	}
 
     public static function create():Void {
         #if LUA_ALLOWED
