@@ -12,7 +12,7 @@ class FlashingState extends MusicBeatState
 	public var isYes:Bool = true;
 	public var texts:FlxTypedSpriteGroup<FlxText>;
 	public var bg:FlxSprite;
-	public var warmText:FlxText;
+	public var warnText:FlxText;
 	public final keys = ["Yes", "No"];
 
 	override function create()
@@ -26,7 +26,7 @@ class FlashingState extends MusicBeatState
 		texts.alpha = 0.0;
 		add(texts);
 
-		warmText = new FlxText(0, 0, FlxG.width,
+		warnText = new FlxText(0, 0, FlxG.width,
 			"Hey, watch out!\n
 			This Mod contains some flashing lights!\n
 			Do you wish to disable them?");
