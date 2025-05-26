@@ -110,7 +110,7 @@ class Main extends Sprite
 			}
 			msgInfo += ' $x';
 			if (PlayState.instance != null)
-				PlayState.instance.addTextToDebug('WARNING: $msgInfo', FlxColor.YELLOW);
+				MusicBeatState.getState().addTextToDebug('WARNING: $msgInfo', FlxColor.YELLOW);
 		}
 		Iris.error = function(x, ?pos:haxe.PosInfos) {
 			Iris.logLevel(ERROR, x, pos);
@@ -128,7 +128,7 @@ class Main extends Sprite
 			}
 			msgInfo += ' $x';
 			if (PlayState.instance != null)
-				PlayState.instance.addTextToDebug('ERROR: $msgInfo', FlxColor.RED);
+				MusicBeatState.getState().addTextToDebug('ERROR: $msgInfo', FlxColor.RED);
 		}
 		Iris.fatal = function(x, ?pos:haxe.PosInfos) {
 			Iris.logLevel(FATAL, x, pos);
@@ -146,7 +146,7 @@ class Main extends Sprite
 			}
 			msgInfo += ' $x';
 			if (PlayState.instance != null)
-				PlayState.instance.addTextToDebug('FATAL: $msgInfo', 0xFFBB0000);
+				MusicBeatState.getState().addTextToDebug('FATAL: $msgInfo', 0xFFBB0000);
 		}
 		#end
 

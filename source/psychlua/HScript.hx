@@ -595,15 +595,15 @@ class HScript
 	#if LUA_ALLOWED
 	public static function implement(funk:FunkinLua) {
 		funk.addLocalCallback("runHaxeCode", function(codeToRun:String, ?varsToBring:Any = null, ?funcToRun:String = null, ?funcArgs:Array<Dynamic> = null):Dynamic {
-			PlayState.instance.addTextToDebug('HScript is not supported on this platform!', FlxColor.RED);
+			MusicBeatState.getState().addTextToDebug('HScript is not supported on this platform!', FlxColor.RED);
 			return null;
 		});
 		funk.addLocalCallback("runHaxeFunction", function(funcToRun:String, ?funcArgs:Array<Dynamic> = null) {
-			PlayState.instance.addTextToDebug('HScript is not supported on this platform!', FlxColor.RED);
+			MusicBeatState.getState().addTextToDebug('HScript is not supported on this platform!', FlxColor.RED);
 			return null;
 		});
 		funk.addLocalCallback("addHaxeLibrary", function(libName:String, ?libPackage:String = '') {
-			PlayState.instance.addTextToDebug('HScript is not supported on this platform!', FlxColor.RED);
+			MusicBeatState.getState().addTextToDebug('HScript is not supported on this platform!', FlxColor.RED);
 			return null;
 		});
 	}

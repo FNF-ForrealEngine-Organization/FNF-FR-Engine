@@ -115,7 +115,7 @@ class MusicBeatSubstate extends FlxSubState
 			}
 		}
 			#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-			addTextToDebug('Missing shader $name .frag AND .vert files!', FlxColor.RED);
+			MusicBeatState.getState().addTextToDebug('Missing shader $name .frag AND .vert files!', FlxColor.RED);
 			#else
 			FlxG.log.warn('Missing shader $name .frag AND .vert files!');
 			#end
