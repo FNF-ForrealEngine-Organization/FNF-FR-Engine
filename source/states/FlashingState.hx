@@ -12,7 +12,7 @@ class FlashingState extends MusicBeatState
 	public var isYes:Bool = true;
 	public var texts:FlxTypedSpriteGroup<FlxText>;
 	public var bg:FlxSprite;
-	public var warnText:FlxText;
+	public var warmText:FlxText;
 	public final keys = ["Yes", "No"];
 
 	override function create()

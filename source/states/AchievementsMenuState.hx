@@ -346,8 +346,10 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 
 	public var scales:Array<Float> = [0.75, 1];
 	public var alphas:Array<Float> = [0.6, 1.25];
-	public var confirmInt:Int = onYes ? 1 : 0;
+	public var confirmInt:Int;
 	public function updateOptions() {
+		confirmInt = onYes ? 0 : 1;
+
 		yesText.alpha = alphas[confirmInt];
 		yesText.scale.set(scales[confirmInt], scales[confirmInt]);
 		noText.alpha = alphas[1 - confirmInt];
