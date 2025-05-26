@@ -18,25 +18,25 @@ class MainMenuState extends MusicBeatState
 	public static var forrealEngineVersion:String = '0.1.0'; // For Engine version
 	public static var curSelected:Int = 0;
 	public static var curColumn:MainMenuColumn = CENTER;
-	var allowMouse:Bool = true; //Turn this off to block mouse movement in menus
+	public var allowMouse:Bool = true; //Turn this off to block mouse movement in menus
 
-	var menuItems:FlxTypedGroup<FlxSprite>;
-	var leftItem:FlxSprite;
-	var rightItem:FlxSprite;
+	public var menuItems:FlxTypedGroup<FlxSprite>;
+	public var leftItem:FlxSprite;
+	public var rightItem:FlxSprite;
 
 	//Centered/Text options
-	var optionShit:Array<String> = [
+	public var optionShit:Array<String> = [
 		'story_mode',
 		'freeplay',
 		#if MODS_ALLOWED 'mods', #end
 		'credits'
 	];
 
-	var leftOption:String = #if ACHIEVEMENTS_ALLOWED 'achievements' #else null #end;
-	var rightOption:String = 'options';
+	public var leftOption:String = #if ACHIEVEMENTS_ALLOWED 'achievements' #else null #end;
+	public var rightOption:String = 'options';
 
-	var magenta:FlxSprite;
-	var camFollow:FlxObject;
+	public var magenta:FlxSprite;
+	public var camFollow:FlxObject;
 
 	static var showOutdatedWarning:Bool = true;
 	override function create()
@@ -131,7 +131,7 @@ class MainMenuState extends MusicBeatState
 		FlxG.camera.follow(camFollow, null, 0.15);
 	}
 
-	function createMenuItem(name:String, x:Float, y:Float):FlxSprite
+	public function createMenuItem(name:String, x:Float, y:Float):FlxSprite
 	{
 		var menuItem:FlxSprite = new FlxSprite(x, y);
 		menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_$name');
@@ -146,9 +146,9 @@ class MainMenuState extends MusicBeatState
 		return menuItem;
 	}
 
-	var selectedSomethin:Bool = false;
+	public var selectedSomethin:Bool = false;
 
-	var timeNotMoving:Float = 0;
+	public var timeNotMoving:Float = 0;
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.8)
@@ -356,7 +356,7 @@ class MainMenuState extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	function changeItem(change:Int = 0)
+	public function changeItem(change:Int = 0)
 	{
 		if(change != 0) curColumn = CENTER;
 		curSelected = FlxMath.wrap(curSelected + change, 0, optionShit.length - 1);
@@ -381,5 +381,11 @@ class MainMenuState extends MusicBeatState
 		selectedItem.animation.play('selected');
 		selectedItem.centerOffsets();
 		camFollow.y = selectedItem.getGraphicMidpoint().y;
+
+		#if (HSCRIPT_ALLOWED || LUA_ALLOWED)
+		GlobalScriptManager.setOnScripts('curSelecetd', curSelected);
+		GlobalScriptManager.setOnScripts('curColumn', curColumn);
+		GlobalScriptManager.callOnScripts('onChangeItem', []);
+		#end
 	}
 }

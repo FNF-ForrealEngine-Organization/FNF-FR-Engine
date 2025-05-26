@@ -4,18 +4,20 @@ import objects.AttachedSprite;
 
 class CreditsState extends MusicBeatState
 {
-	var curSelected:Int = -1;
+	public var curSelected:Int = -1;
 
-	private var grpOptions:FlxTypedGroup<Alphabet>;
-	private var iconArray:Array<AttachedSprite> = [];
-	private var creditsStuff:Array<Array<String>> = [];
+	public var grpOptions:FlxTypedGroup<Alphabet>;
+	public var iconArray:Array<AttachedSprite> = [];
+	public var creditsStuff:Array<Array<String>> = [];
 
-	var bg:FlxSprite;
-	var descText:FlxText;
-	var intendedColor:FlxColor;
-	var descBox:AttachedSprite;
+	public var bg:FlxSprite;
+	public var descText:FlxText;
+	public var intendedColor:FlxColor;
+	public var descBox:AttachedSprite;
 
-	var offsetThing:Float = -75;
+	public var offsetThing:Float = -75;
+
+	public var defaultList:Array<Array<String>> = [];
 
 	override function create()
 	{
@@ -37,7 +39,7 @@ class CreditsState extends MusicBeatState
 		for (mod in Mods.parseList().enabled) pushModCreditsToList(mod);
 		#end
 
-		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
+		defaultList = [ //Name - Icon name - Description - Link - BG Color
 			["Psych Engine Team"],
 			["Shadow Mario",		"shadowmario",		"Main Programmer and Head of Psych Engine",					"https://ko-fi.com/shadowmario",	"444444"],
 			["Riveren",				"riveren",			"Main Artist/Animator of Psych Engine",						"https://x.com/riverennn",			"14967B"],
@@ -130,8 +132,8 @@ class CreditsState extends MusicBeatState
 		super.create();
 	}
 
-	var quitting:Bool = false;
-	var holdTime:Float = 0;
+	public var quitting:Bool = false;
+	public var holdTime:Float = 0;
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.7)
@@ -204,8 +206,8 @@ class CreditsState extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	var moveTween:FlxTween = null;
-	function changeSelection(change:Int = 0)
+	public var moveTween:FlxTween = null;
+	public function changeSelection(change:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 		do
@@ -247,10 +249,15 @@ class CreditsState extends MusicBeatState
 			descBox.updateHitbox();
 		}
 		else descText.visible = descBox.visible = false;
+
+		#if (HSCRIPT_ALLOWED || LUA_ALLOWED)
+		GlobalScriptManager.setOnScripts('curSelecetd', curSelected);
+		GlobalScriptManager.callOnScripts('onChangeItem', []);
+		#end
 	}
 
 	#if MODS_ALLOWED
-	function pushModCreditsToList(folder:String)
+	public function pushModCreditsToList(folder:String)
 	{
 		var creditsFile:String = Paths.mods(folder + '/data/credits.txt');
 		
@@ -273,7 +280,7 @@ class CreditsState extends MusicBeatState
 	}
 	#end
 
-	private function unselectableCheck(num:Int):Bool {
+	public function unselectableCheck(num:Int):Bool {
 		return creditsStuff[num].length <= 1;
 	}
 }
