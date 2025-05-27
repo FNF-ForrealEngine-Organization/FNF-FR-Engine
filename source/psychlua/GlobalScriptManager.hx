@@ -417,9 +417,9 @@ class GlobalScriptManager {
     }
 
     #if (!flash && sys)
-	public var runtimeShaders:Map<String, Array<String>> = new Map<String, Array<String>>();
+	public static var runtimeShaders:Map<String, Array<String>> = new Map<String, Array<String>>();
 	#end
-	public function createRuntimeShader(shaderName:String):ErrorHandledRuntimeShader
+	public static function createRuntimeShader(shaderName:String):ErrorHandledRuntimeShader
 	{
 		#if (!flash && sys)
 		if(!ClientPrefs.data.shaders) return new ErrorHandledRuntimeShader(shaderName);
@@ -438,7 +438,7 @@ class GlobalScriptManager {
 		#end
 	}
 
-	public function initLuaShader(name:String, ?glslVersion:Int = 120)
+	public static function initLuaShader(name:String, ?glslVersion:Int = 120)
 	{
 		if(!ClientPrefs.data.shaders) return false;
 

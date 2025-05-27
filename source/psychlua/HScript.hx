@@ -170,6 +170,7 @@ class HScript extends Iris
 		set('Alphabet', Alphabet);
 		set('Note', objects.Note);
 		set('CustomSubstate', CustomSubstate);
+		set('CustomState', CustomState);
 		#if (!flash && sys)
 		set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
 		set('ErrorHandledRuntimeShader', shaders.ErrorHandledShader.ErrorHandledRuntimeShader);
@@ -347,6 +348,17 @@ class HScript extends Iris
 		set('Function_StopLua', LuaUtils.Function_StopLua); //doesnt do much cuz HScript has a lower priority than Lua
 		set('Function_StopHScript', LuaUtils.Function_StopHScript);
 		set('Function_StopAll', LuaUtils.Function_StopAll);
+
+		// Shaders
+		set('createRuntimeShader', function (shaderName:String) {
+			return GlobalScriptManager.createRuntimeShader(shaderName);
+		});
+		set('initLuaShader', function (name:String, ?glslVersion:Int = 120) {
+			return GlobalScriptManager.initLuaShader(name, glslVersion);
+		});
+		set('initShader', function (name:String, ?glslVersion:Int = 120) {
+			return GlobalScriptManager.initLuaShader(name, glslVersion);
+		});
 	}
 
 	#if LUA_ALLOWED

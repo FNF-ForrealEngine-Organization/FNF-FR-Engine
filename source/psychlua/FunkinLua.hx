@@ -61,11 +61,6 @@ class FunkinLua {
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
 
-		//trace('Lua version: ' + Lua.version());
-		//trace("LuaJIT version: " + Lua.versionJIT());
-
-		//LuaL.dostring(lua, CLENSE);
-
 		this.scriptName = scriptName.trim();
 		var game:PlayState = PlayState.instance;
 		GlobalScriptManager.luaArray.push(this);
@@ -1554,7 +1549,10 @@ class FunkinLua {
 			luaTrace("getModSetting: Mods are disabled in this build!", false, false, FlxColor.RED);
 			#end
 		});
-		//
+		// custom states eyy
+		Lua_helper.add_callback(lua, "switchState", function(state:String) {
+			FlxG.switchState(new CustomState(state));
+		});
 
 		Lua_helper.add_callback(lua, "debugPrint", function(text:Dynamic = '', color:String = 'WHITE') MusicBeatState.getState().addTextToDebug(text, CoolUtil.colorFromString(color)));
 
