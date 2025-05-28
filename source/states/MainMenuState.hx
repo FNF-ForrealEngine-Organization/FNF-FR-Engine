@@ -98,7 +98,7 @@ class MainMenuState extends MusicBeatState
 			rightItem.x -= rightItem.width;
 		}
 
-		var forrealVer:FlxText = new FlxText(12, FlxG.height - 44, 0, "Forreal Engine v" + forrealEngineVersion, 12);
+		var forrealVer:FlxText = new FlxText(12, FlxG.height - 64, 0, "Forreal Engine v" + forrealEngineVersion, 12);
 		forrealVer.scrollFactor.set();
 		forrealVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(forrealVer);
