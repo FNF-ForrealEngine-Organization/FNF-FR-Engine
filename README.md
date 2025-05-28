@@ -1,4 +1,3 @@
-# Forreal Engine
 ![Logo Forreal Engine](logo.png)
 
 A custom fork version of psych engine, come up with:
