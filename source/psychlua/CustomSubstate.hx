@@ -1,11 +1,13 @@
 package psychlua;
 
 import flixel.FlxObject;
+import backend.MusicBeatState;
 
 class CustomSubstate extends MusicBeatSubstate
 {
 	public static var name:String = 'unnamed';
 	public static var instance:CustomSubstate;
+	private static var currentState:MusicBeatState;
 
 	#if LUA_ALLOWED
 	public static function implement(funk:FunkinLua)
@@ -19,25 +21,32 @@ class CustomSubstate extends MusicBeatSubstate
 	
 	public static function openCustomSubstate(name:String, ?pauseGame:Bool = false)
 	{
+		var state = FlxG.state;
+		if(!(state is MusicBeatState)) return;
+
+		currentState = cast state;
 		if(pauseGame)
 		{
 			FlxG.camera.followLerp = 0;
-			PlayState.instance.persistentUpdate = false;
-			PlayState.instance.persistentDraw = true;
-			PlayState.instance.paused = true;
+			currentState.persistentUpdate = false;
+			currentState.persistentDraw = true;
 			if(FlxG.sound.music != null) {
 				FlxG.sound.music.pause();
-				PlayState.instance.vocals.pause();
+				// Only pause vocals if we're in PlayState
+				if(currentState is PlayState) {
+					var playState:PlayState = cast currentState;
+					playState.vocals.pause();
+				}
 			}
 		}
-		PlayState.instance.openSubState(new CustomSubstate(name));
+		currentState.openSubState(new CustomSubstate(name));
 	}
 
 	public static function closeCustomSubstate()
 	{
-		if(instance != null)
+		if(instance != null && currentState != null)
 		{
-			PlayState.instance.closeSubState();
+			currentState.closeSubState();
 			return true;
 		}
 		return false;
@@ -64,7 +73,6 @@ class CustomSubstate extends MusicBeatSubstate
 		instance = this;
 		GlobalScriptManager.setOnHScript('customSubstate', instance);
 
-
 		GlobalScriptManager.callOnScripts('onCustomSubstateCreate', [name]);
 		super.create();
 		GlobalScriptManager.callOnScripts('onCustomSubstateCreatePost', [name]);
@@ -90,6 +98,7 @@ class CustomSubstate extends MusicBeatSubstate
 		GlobalScriptManager.callOnScripts('onCustomSubstateDestroy', [name]);
 		instance = null;
 		name = 'unnamed';
+		currentState = null;
 
 		GlobalScriptManager.setOnHScript('customSubstate', null);
 		GlobalScriptManager.setOnHScript('customSubstateName', name);
