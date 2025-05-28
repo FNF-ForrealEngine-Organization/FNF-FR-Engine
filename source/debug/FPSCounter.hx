@@ -33,7 +33,7 @@ class FPSCounter extends TextField
 		currentFPS = 0;
 		selectable = false;
 		mouseEnabled = false;
-		defaultTextFormat = new TextFormat("_sans", 14, color);
+		defaultTextFormat = new TextFormat(Paths.font("vcr.ttf"), 14, color);
 		autoSize = LEFT;
 		multiline = true;
 		text = "FPS: ";
@@ -67,6 +67,8 @@ class FPSCounter extends TextField
 		textColor = 0xFFFFFFFF;
 		if (currentFPS < FlxG.drawFramerate * 0.5)
 			textColor = 0xFFFF0000;
+		else if (currentFPS < FlxG.drawFramerate)
+			textColor = 0xFFFFFF00;
 	}
 
 	inline function get_memoryMegas():Float
