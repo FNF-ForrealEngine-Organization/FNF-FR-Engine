@@ -1,5 +1,6 @@
 package states;
 
+import psychlua.StateScriptHandler;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
@@ -19,34 +20,36 @@ class StoryMenuState extends MusicBeatState
 {
 	public static var weekCompleted:Map<String, Bool> = new Map<String, Bool>();
 
-	var scoreText:FlxText;
+	public var scoreText:FlxText;
 
-	private static var lastDifficultyName:String = '';
-	var curDifficulty:Int = 1;
+	public var lastDifficultyName:String = '';
+	public var curDifficulty:Int = 1;
 
-	var txtWeekTitle:FlxText;
-	var bgSprite:FlxSprite;
+	public var txtWeekTitle:FlxText;
+	public var bgSprite:FlxSprite;
 
-	private static var curWeek:Int = 0;
+	public var curWeek:Int = 0;
 
-	var txtTracklist:FlxText;
+	public var txtTracklist:FlxText;
 
-	var grpWeekText:FlxTypedGroup<MenuItem>;
-	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
+	public var grpWeekText:FlxTypedGroup<MenuItem>;
+	public var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
 
-	var grpLocks:FlxTypedGroup<FlxSprite>;
+	public var grpLocks:FlxTypedGroup<FlxSprite>;
 
-	var difficultySelectors:FlxGroup;
-	var sprDifficulty:FlxSprite;
-	var leftArrow:FlxSprite;
-	var rightArrow:FlxSprite;
+	public var difficultySelectors:FlxGroup;
+	public var sprDifficulty:FlxSprite;
+	public var leftArrow:FlxSprite;
+	public var rightArrow:FlxSprite;
 
-	var loadedWeeks:Array<WeekData> = [];
+	public var loadedWeeks:Array<WeekData> = [];
 
 	override function create()
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
+
+		setStateScript();
 
 		persistentUpdate = persistentDraw = true;
 		PlayState.isStoryMode = true;
@@ -292,11 +295,11 @@ class StoryMenuState extends MusicBeatState
 			lock.y = grpWeekText.members[lock.ID].y + grpWeekText.members[lock.ID].height/2 - lock.height/2;
 	}
 
-	var movedBack:Bool = false;
-	var selectedWeek:Bool = false;
-	var stopspamming:Bool = false;
+	public var movedBack:Bool = false;
+	public var selectedWeek:Bool = false;
+	public var stopspamming:Bool = false;
 
-	function selectWeek()
+	public function selectWeek()
 	{
 		if (!weekIsLocked(loadedWeeks[curWeek].fileName))
 		{
@@ -369,7 +372,7 @@ class StoryMenuState extends MusicBeatState
 		else FlxG.sound.play(Paths.sound('cancelMenu'));
 	}
 
-	function changeDifficulty(change:Int = 0):Void
+	public function changeDifficulty(change:Int = 0):Void
 	{
 		curDifficulty += change;
 
@@ -400,12 +403,14 @@ class StoryMenuState extends MusicBeatState
 		#if !switch
 		intendedScore = Highscore.getWeekScore(loadedWeeks[curWeek].fileName, curDifficulty);
 		#end
+
+		StateScriptHandler.callOnScripts("onChangeDifficulty", []);
 	}
 
-	var lerpScore:Int = 49324858;
-	var intendedScore:Int = 0;
+	public var lerpScore:Int = 49324858;
+	public var intendedScore:Int = 0;
 
-	function changeWeek(change:Int = 0):Void
+	public function changeWeek(change:Int = 0):Void
 	{
 		curWeek += change;
 
@@ -453,14 +458,16 @@ class StoryMenuState extends MusicBeatState
 			curDifficulty = newPos;
 		}
 		updateText();
+
+		StateScriptHandler.callOnScripts("onChangeWeek", []);
 	}
 
-	function weekIsLocked(name:String):Bool {
+	public function weekIsLocked(name:String):Bool {
 		var leWeek:WeekData = WeekData.weeksLoaded.get(name);
 		return (!leWeek.startUnlocked && leWeek.weekBefore.length > 0 && (!weekCompleted.exists(leWeek.weekBefore) || !weekCompleted.get(leWeek.weekBefore)));
 	}
 
-	function updateText()
+	public function updateText()
 	{
 		var weekArray:Array<String> = loadedWeeks[curWeek].weekCharacters;
 		for (i in 0...grpWeekCharacters.length) {

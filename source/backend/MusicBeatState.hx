@@ -1,5 +1,7 @@
 package backend;
 
+import flixel.FlxBasic;
+import psychlua.StateScriptHandler;
 import flixel.FlxState;
 import backend.PsychCamera;
 
@@ -25,11 +27,30 @@ class MusicBeatState extends FlxState
 	public static function getVariables()
 		return getState().variables;
 
+	function setStateScript(?name:String) {
+		if (name == null)
+			StateScriptHandler.setState(Type.getClassName(Type.getClass(this)).split('').pop(), this);
+		else
+			StateScriptHandler.setState(name, this);
+	}
+
+	override function add(basic:FlxBasic):FlxBasic {
+		StateScriptHandler.callOnScripts("onLoaded", [basic]); // idk why
+		return super.add(basic);
+	}
+
+	override function remove(basic:FlxBasic, splice:Bool = false):FlxBasic {
+		StateScriptHandler.callOnScripts("onRemove", [basic, splice]); // idk why pt2
+		return super.remove(basic, splice);
+	}
+
 	override function create() {
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
 		#if MODS_ALLOWED Mods.updatedOnState = false; #end
 
 		if(!_psychCameraInitialized) initPsychCamera();
+
+		StateScriptHandler.callOnScripts("onCreate", []);
 
 		super.create();
 
@@ -38,6 +59,8 @@ class MusicBeatState extends FlxState
 		}
 		FlxTransitionableState.skipNextTransOut = false;
 		timePassedOnState = 0;
+
+		StateScriptHandler.callOnScripts("onCreatePost", []);
 	}
 
 	public function initPsychCamera():PsychCamera
@@ -60,6 +83,8 @@ class MusicBeatState extends FlxState
 		updateCurStep();
 		updateBeat();
 
+		StateScriptHandler.callOnScripts("onUpdate", [elapsed]);
+
 		if (oldStep != curStep)
 		{
 			if(curStep > 0)
@@ -81,6 +106,8 @@ class MusicBeatState extends FlxState
 		});
 
 		super.update(elapsed);
+
+		StateScriptHandler.callOnScripts("onUpdatePost", [elapsed]);
 	}
 
 	private function updateSection():Void
@@ -175,6 +202,10 @@ class MusicBeatState extends FlxState
 			stage.stepHit();
 		});
 
+		StateScriptHandler.setOnScripts("curStep", curStep);
+		StateScriptHandler.setOnScripts("curDecStep", curDecStep);
+		StateScriptHandler.callOnScripts("onStepHit", []);
+		
 		if (curStep % 4 == 0)
 			beatHit();
 	}
@@ -188,6 +219,10 @@ class MusicBeatState extends FlxState
 			stage.curDecBeat = curDecBeat;
 			stage.beatHit();
 		});
+
+		StateScriptHandler.setOnScripts("curBeat", curBeat);
+		StateScriptHandler.setOnScripts("curDecBeat", curDecBeat);
+		StateScriptHandler.callOnScripts("onBeatHit", []);
 	}
 
 	public function sectionHit():Void
@@ -197,6 +232,9 @@ class MusicBeatState extends FlxState
 			stage.curSection = curSection;
 			stage.sectionHit();
 		});
+
+		StateScriptHandler.setOnScripts("curSection", curSection);
+		StateScriptHandler.callOnScripts("onSectionHit", []);
 	}
 
 	function stagesFunc(func:BaseStage->Void)
@@ -211,5 +249,17 @@ class MusicBeatState extends FlxState
 		var val:Null<Float> = 4;
 		if(PlayState.SONG != null && PlayState.SONG.notes[curSection] != null) val = PlayState.SONG.notes[curSection].sectionBeats;
 		return val == null ? 4 : val;
+	}
+
+	override function destroy() {
+		super.destroy();
+
+		StateScriptHandler.destroy();
+	}
+
+	override function draw() {
+		super.draw();
+
+		StateScriptHandler.callOnScripts("onDraw", []);
 	}
 }

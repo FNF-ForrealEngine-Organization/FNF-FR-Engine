@@ -1,7 +1,7 @@
 ![Logo Forreal Engine](logo.png)
 
 A custom fork version of psych engine, come up with:
-- Scripted State, Sub State
+- Scripted State, Sub State (Well Sub State is already there lmao)
 
 ## Credits
 * Huy1234TH: Onwer of this Project

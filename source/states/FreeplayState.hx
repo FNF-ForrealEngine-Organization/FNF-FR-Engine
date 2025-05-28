@@ -1,5 +1,6 @@
 package states;
 
+import psychlua.StateScriptHandler;
 import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
@@ -19,43 +20,45 @@ import haxe.Json;
 
 class FreeplayState extends MusicBeatState
 {
-	var songs:Array<SongMetadata> = [];
+	public var songs:Array<SongMetadata> = [];
 
-	var selector:FlxText;
-	private static var curSelected:Int = 0;
-	var lerpSelected:Float = 0;
-	var curDifficulty:Int = -1;
-	private static var lastDifficultyName:String = Difficulty.getDefault();
+	public var selector:FlxText;
+	public var curSelected:Int = 0;
+	public var lerpSelected:Float = 0;
+	public var curDifficulty:Int = -1;
+	public var lastDifficultyName:String = Difficulty.getDefault();
 
-	var scoreBG:FlxSprite;
-	var scoreText:FlxText;
-	var diffText:FlxText;
-	var lerpScore:Int = 0;
-	var lerpRating:Float = 0;
-	var intendedScore:Int = 0;
-	var intendedRating:Float = 0;
+	public var scoreBG:FlxSprite;
+	public var scoreText:FlxText;
+	public var diffText:FlxText;
+	public var lerpScore:Int = 0;
+	public var lerpRating:Float = 0;
+	public var intendedScore:Int = 0;
+	public var intendedRating:Float = 0;
 
-	private var grpSongs:FlxTypedGroup<Alphabet>;
-	private var curPlaying:Bool = false;
+	public var grpSongs:FlxTypedGroup<Alphabet>;
+	public var curPlaying:Bool = false;
 
-	private var iconArray:Array<HealthIcon> = [];
+	public var iconArray:Array<HealthIcon> = [];
 
-	var bg:FlxSprite;
-	var intendedColor:Int;
+	public var bg:FlxSprite;
+	public var intendedColor:Int;
 
-	var missingTextBG:FlxSprite;
-	var missingText:FlxText;
+	public var missingTextBG:FlxSprite;
+	public var missingText:FlxText;
 
-	var bottomString:String;
-	var bottomText:FlxText;
-	var bottomBG:FlxSprite;
+	public var bottomString:String;
+	public var bottomText:FlxText;
+	public var bottomBG:FlxSprite;
 
-	var player:MusicPlayer;
+	public var player:MusicPlayer;
 
 	override function create()
 	{
 		//Paths.clearStoredMemory();
 		//Paths.clearUnusedMemory();
+
+		setStateScript();
 		
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
@@ -203,18 +206,18 @@ class FreeplayState extends MusicBeatState
 		songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 	}
 
-	function weekIsLocked(name:String):Bool
+	public function weekIsLocked(name:String):Bool
 	{
 		var leWeek:WeekData = WeekData.weeksLoaded.get(name);
 		return (!leWeek.startUnlocked && leWeek.weekBefore.length > 0 && (!StoryMenuState.weekCompleted.exists(leWeek.weekBefore) || !StoryMenuState.weekCompleted.get(leWeek.weekBefore)));
 	}
 
-	var instPlaying:Int = -1;
+	public var instPlaying:Int = -1;
 	public static var vocals:FlxSound = null;
 	public static var opponentVocals:FlxSound = null;
-	var holdTime:Float = 0;
+	public var holdTime:Float = 0;
 
-	var stopMusicPlay:Bool = false;
+	public var stopMusicPlay:Bool = false;
 	override function update(elapsed:Float)
 	{
 		if(WeekData.weeksList.length < 1)
@@ -463,7 +466,7 @@ class FreeplayState extends MusicBeatState
 		super.update(elapsed);
 	}
 	
-	function getVocalFromCharacter(char:String)
+	public function getVocalFromCharacter(char:String)
 	{
 		try
 		{
@@ -487,7 +490,7 @@ class FreeplayState extends MusicBeatState
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
 	}
 
-	function changeDiff(change:Int = 0)
+	public function changeDiff(change:Int = 0)
 	{
 		if (player.playingMusic)
 			return;
@@ -505,12 +508,14 @@ class FreeplayState extends MusicBeatState
 		else
 			diffText.text = displayDiff.toUpperCase();
 
+		StateScriptHandler.callOnScripts("onChangeDiff", []);
+
 		positionHighscore();
 		missingText.visible = false;
 		missingTextBG.visible = false;
 	}
 
-	function changeSelection(change:Int = 0, playSound:Bool = true)
+	public function changeSelection(change:Int = 0, playSound:Bool = true)
 	{
 		if (player.playingMusic)
 			return;
@@ -553,6 +558,8 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
 		else
 			curDifficulty = 0;
+
+		StateScriptHandler.callOnScripts("onChangeSelection", []);
 
 		changeDiff();
 		_updateSongLastDifficulty();
