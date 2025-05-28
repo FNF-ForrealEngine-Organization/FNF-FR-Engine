@@ -19,38 +19,38 @@ import haxe.Json;
 
 class FreeplayState extends MusicBeatState
 {
-	public var songs:Array<SongMetadata> = [];
+	var songs:Array<SongMetadata> = [];
 
-	public var selector:FlxText;
-	public static var curSelected:Int = 0;
-	public var lerpSelected:Float = 0;
-	public var curDifficulty:Int = -1;
-	public static var lastDifficultyName:String = Difficulty.getDefault();
+	var selector:FlxText;
+	private static var curSelected:Int = 0;
+	var lerpSelected:Float = 0;
+	var curDifficulty:Int = -1;
+	private static var lastDifficultyName:String = Difficulty.getDefault();
 
-	public var scoreBG:FlxSprite;
-	public var scoreText:FlxText;
-	public var diffText:FlxText;
-	public var lerpScore:Int = 0;
-	public var lerpRating:Float = 0;
-	public var intendedScore:Int = 0;
-	public var intendedRating:Float = 0;
+	var scoreBG:FlxSprite;
+	var scoreText:FlxText;
+	var diffText:FlxText;
+	var lerpScore:Int = 0;
+	var lerpRating:Float = 0;
+	var intendedScore:Int = 0;
+	var intendedRating:Float = 0;
 
-	public var grpSongs:FlxTypedGroup<Alphabet>;
-	public var curPlaying:Bool = false;
+	private var grpSongs:FlxTypedGroup<Alphabet>;
+	private var curPlaying:Bool = false;
 
-	public var iconArray:Array<HealthIcon> = [];
+	private var iconArray:Array<HealthIcon> = [];
 
-	public var bg:FlxSprite;
-	public var intendedColor:Int;
+	var bg:FlxSprite;
+	var intendedColor:Int;
 
-	public var missingTextBG:FlxSprite;
-	public var missingText:FlxText;
+	var missingTextBG:FlxSprite;
+	var missingText:FlxText;
 
-	public var bottomString:String;
-	public var bottomText:FlxText;
-	public var bottomBG:FlxSprite;
+	var bottomString:String;
+	var bottomText:FlxText;
+	var bottomBG:FlxSprite;
 
-	public var player:MusicPlayer;
+	var player:MusicPlayer;
 
 	override function create()
 	{
@@ -203,18 +203,18 @@ class FreeplayState extends MusicBeatState
 		songs.push(new SongMetadata(songName, weekNum, songCharacter, color));
 	}
 
-	public function weekIsLocked(name:String):Bool
+	function weekIsLocked(name:String):Bool
 	{
 		var leWeek:WeekData = WeekData.weeksLoaded.get(name);
 		return (!leWeek.startUnlocked && leWeek.weekBefore.length > 0 && (!StoryMenuState.weekCompleted.exists(leWeek.weekBefore) || !StoryMenuState.weekCompleted.get(leWeek.weekBefore)));
 	}
 
-	public var instPlaying:Int = -1;
+	var instPlaying:Int = -1;
 	public static var vocals:FlxSound = null;
 	public static var opponentVocals:FlxSound = null;
-	public var holdTime:Float = 0;
+	var holdTime:Float = 0;
 
-	public var stopMusicPlay:Bool = false;
+	var stopMusicPlay:Bool = false;
 	override function update(elapsed:Float)
 	{
 		if(WeekData.weeksList.length < 1)
@@ -463,7 +463,7 @@ class FreeplayState extends MusicBeatState
 		super.update(elapsed);
 	}
 	
-	public function getVocalFromCharacter(char:String)
+	function getVocalFromCharacter(char:String)
 	{
 		try
 		{
@@ -485,13 +485,9 @@ class FreeplayState extends MusicBeatState
 
 		if(opponentVocals != null) opponentVocals.stop();
 		opponentVocals = FlxDestroyUtil.destroy(opponentVocals);
-
-		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-		GlobalScriptManager.callOnScripts('onDestroyFreeplayVocals', []);
-		#end
 	}
 
-	public function changeDiff(change:Int = 0)
+	function changeDiff(change:Int = 0)
 	{
 		if (player.playingMusic)
 			return;
@@ -512,15 +508,9 @@ class FreeplayState extends MusicBeatState
 		positionHighscore();
 		missingText.visible = false;
 		missingTextBG.visible = false;
-
-		#if (HSCRIPT_ALLOWED || LUA_ALLOWED)
-		GlobalScriptManager.setOnScripts('curDifficulty', curDifficulty);
-		GlobalScriptManager.setOnScripts('lastDifficultyName', lastDifficultyName);
-		GlobalScriptManager.callOnScripts('onChangeDiff', []);
-		#end
 	}
 
-	public function changeSelection(change:Int = 0, playSound:Bool = true)
+	function changeSelection(change:Int = 0, playSound:Bool = true)
 	{
 		if (player.playingMusic)
 			return;
@@ -564,11 +554,6 @@ class FreeplayState extends MusicBeatState
 		else
 			curDifficulty = 0;
 
-		#if (HSCRIPT_ALLOWED || LUA_ALLOWED)
-		GlobalScriptManager.setOnScripts('curSelecetd', curSelected);
-		GlobalScriptManager.callOnScripts('onChangeItem', []);
-		#end
-
 		changeDiff();
 		_updateSongLastDifficulty();
 	}
@@ -576,7 +561,7 @@ class FreeplayState extends MusicBeatState
 	inline private function _updateSongLastDifficulty()
 		songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
 
-	public function positionHighscore()
+	private function positionHighscore()
 	{
 		scoreText.x = FlxG.width - scoreText.width - 6;
 		scoreBG.scale.x = FlxG.width - scoreText.x + 6;
@@ -585,8 +570,8 @@ class FreeplayState extends MusicBeatState
 		diffText.x -= diffText.width / 2;
 	}
 
-	public var _drawDistance:Int = 4;
-	public var _lastVisibles:Array<Int> = [];
+	var _drawDistance:Int = 4;
+	var _lastVisibles:Array<Int> = [];
 	public function updateTexts(elapsed:Float = 0.0)
 	{
 		lerpSelected = FlxMath.lerp(curSelected, lerpSelected, Math.exp(-elapsed * 9.6));

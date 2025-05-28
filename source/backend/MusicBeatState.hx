@@ -25,60 +25,13 @@ class MusicBeatState extends FlxState
 	public static function getVariables()
 		return getState().variables;
 
-	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-	private var luaDebugGroup:FlxTypedGroup<psychlua.DebugLuaText>;
-	private var camLuaDebug:PsychCamera = new PsychCamera();
-	#end
-
-	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-	public function addTextToDebug(text:String, color:FlxColor) {
-		if (luaDebugGroup == null) {
-			luaDebugGroup = new FlxTypedGroup<psychlua.DebugLuaText>();
-			add(luaDebugGroup);
-		}
-		var newText:psychlua.DebugLuaText = luaDebugGroup.recycle(psychlua.DebugLuaText);
-		newText.text = text;
-		newText.color = color;
-		newText.disableTime = 6;
-		newText.alpha = 1;
-		newText.setPosition(10, 8 - newText.height);
-
-		luaDebugGroup.forEachAlive(function(spr:psychlua.DebugLuaText) {
-			spr.y += newText.height + 2;
-		});
-		luaDebugGroup.add(newText);
-
-		Sys.println(text);
-	}
-	#end
-
-	public function setStateScript(allow:Bool = true):Void
-	{
-		if (allow)
-			GlobalScriptManager.setStateScript(Type.getClassName(Type.getClass(this)).split('.').pop(), this);
-	}
-
 	override function create() {
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
 		#if MODS_ALLOWED Mods.updatedOnState = false; #end
 
-		setStateScript(); // hope work
-
 		if(!_psychCameraInitialized) initPsychCamera();
 
-		GlobalScriptManager.create();
-
 		super.create();
-
-		GlobalScriptManager.createPost();
-
-		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
-		camLuaDebug = initPsychCamera();
-
-		luaDebugGroup = new FlxTypedGroup<psychlua.DebugLuaText>();
-		luaDebugGroup.cameras = [camLuaDebug];
-		add(luaDebugGroup);
-		#end
 
 		if(!skip) {
 			openSubState(new CustomFadeTransition(0.5, true));
@@ -93,6 +46,7 @@ class MusicBeatState extends FlxState
 		FlxG.cameras.reset(camera);
 		FlxG.cameras.setDefaultDrawTarget(camera, true);
 		_psychCameraInitialized = true;
+		//trace('initialized psych camera ' + Sys.cpuTime());
 		return camera;
 	}
 
@@ -102,8 +56,6 @@ class MusicBeatState extends FlxState
 		//everyStep();
 		var oldStep:Int = curStep;
 		timePassedOnState += elapsed;
-
-		GlobalScriptManager.update(elapsed);
 
 		updateCurStep();
 		updateBeat();
@@ -129,8 +81,6 @@ class MusicBeatState extends FlxState
 		});
 
 		super.update(elapsed);
-
-		GlobalScriptManager.updatePost(elapsed);
 	}
 
 	private function updateSection():Void
@@ -223,9 +173,7 @@ class MusicBeatState extends FlxState
 			stage.curStep = curStep;
 			stage.curDecStep = curDecStep;
 			stage.stepHit();
-		});	
-
-		GlobalScriptManager.stepHit(curStep, curDecStep);
+		});
 
 		if (curStep % 4 == 0)
 			beatHit();
@@ -234,13 +182,12 @@ class MusicBeatState extends FlxState
 	public var stages:Array<BaseStage> = [];
 	public function beatHit():Void
 	{
+		//trace('Beat: ' + curBeat);
 		stagesFunc(function(stage:BaseStage) {
 			stage.curBeat = curBeat;
 			stage.curDecBeat = curDecBeat;
 			stage.beatHit();
 		});
-	
-		GlobalScriptManager.beatHit(curBeat, curDecBeat);
 	}
 
 	public function sectionHit():Void

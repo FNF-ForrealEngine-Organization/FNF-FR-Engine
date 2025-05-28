@@ -9,11 +9,9 @@ class FlashingState extends MusicBeatState
 {
 	public static var leftState:Bool = false;
 
-	public var isYes:Bool = true;
-	public var texts:FlxTypedSpriteGroup<FlxText>;
-	public var bg:FlxSprite;
-	public var warnText:FlxText;
-	public final keys = ["Yes", "No"];
+	var isYes:Bool = true;
+	var texts:FlxTypedSpriteGroup<FlxText>;
+	var bg:FlxSprite;
 
 	override function create()
 	{
@@ -26,7 +24,7 @@ class FlashingState extends MusicBeatState
 		texts.alpha = 0.0;
 		add(texts);
 
-		warnText = new FlxText(0, 0, FlxG.width,
+		var warnText:FlxText = new FlxText(0, 0, FlxG.width,
 			"Hey, watch out!\n
 			This Mod contains some flashing lights!\n
 			Do you wish to disable them?");
@@ -34,6 +32,7 @@ class FlashingState extends MusicBeatState
 		warnText.screenCenter(Y);
 		texts.add(warnText);
 
+		final keys = ["Yes", "No"];
 		for (i in 0...keys.length) {
 			final button = new FlxText(0, 0, FlxG.width, keys[i]);
 			button.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
@@ -85,7 +84,7 @@ class FlashingState extends MusicBeatState
 		super.update(elapsed);
 	}
 
-	public function updateItems() {
+	function updateItems() {
 		// it's clunky but it works.
 		texts.members[1].alpha = isYes ? 1.0 : 0.6;
 		texts.members[2].alpha = isYes ? 0.6 : 1.0;

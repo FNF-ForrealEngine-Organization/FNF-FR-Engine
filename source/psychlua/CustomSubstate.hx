@@ -1,13 +1,11 @@
 package psychlua;
 
 import flixel.FlxObject;
-import backend.MusicBeatState;
 
 class CustomSubstate extends MusicBeatSubstate
 {
 	public static var name:String = 'unnamed';
 	public static var instance:CustomSubstate;
-	private static var currentState:MusicBeatState;
 
 	#if LUA_ALLOWED
 	public static function implement(funk:FunkinLua)
@@ -21,32 +19,25 @@ class CustomSubstate extends MusicBeatSubstate
 	
 	public static function openCustomSubstate(name:String, ?pauseGame:Bool = false)
 	{
-		var state = FlxG.state;
-		if(!(state is MusicBeatState)) return;
-
-		currentState = cast state;
 		if(pauseGame)
 		{
 			FlxG.camera.followLerp = 0;
-			currentState.persistentUpdate = false;
-			currentState.persistentDraw = true;
+			PlayState.instance.persistentUpdate = false;
+			PlayState.instance.persistentDraw = true;
+			PlayState.instance.paused = true;
 			if(FlxG.sound.music != null) {
 				FlxG.sound.music.pause();
-				// Only pause vocals if we're in PlayState
-				if(currentState is PlayState) {
-					var playState:PlayState = cast currentState;
-					playState.vocals.pause();
-				}
+				PlayState.instance.vocals.pause();
 			}
 		}
-		currentState.openSubState(new CustomSubstate(name));
+		PlayState.instance.openSubState(new CustomSubstate(name));
 	}
 
 	public static function closeCustomSubstate()
 	{
-		if(instance != null && currentState != null)
+		if(instance != null)
 		{
-			currentState.closeSubState();
+			PlayState.instance.closeSubState();
 			return true;
 		}
 		return false;
@@ -71,37 +62,37 @@ class CustomSubstate extends MusicBeatSubstate
 	override function create()
 	{
 		instance = this;
-		GlobalScriptManager.setOnHScript('customSubstate', instance);
+		PlayState.instance.setOnHScript('customSubstate', instance);
 
-		GlobalScriptManager.callOnScripts('onCustomSubstateCreate', [name]);
+
+		PlayState.instance.callOnScripts('onCustomSubstateCreate', [name]);
 		super.create();
-		GlobalScriptManager.callOnScripts('onCustomSubstateCreatePost', [name]);
+		PlayState.instance.callOnScripts('onCustomSubstateCreatePost', [name]);
 	}
 	
 	public function new(name:String)
 	{
 		CustomSubstate.name = name;
-		GlobalScriptManager.setOnHScript('customSubstateName', name);
+		PlayState.instance.setOnHScript('customSubstateName', name);
 		super();
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 	}
 	
 	override function update(elapsed:Float)
 	{
-		GlobalScriptManager.callOnScripts('onCustomSubstateUpdate', [name, elapsed]);
+		PlayState.instance.callOnScripts('onCustomSubstateUpdate', [name, elapsed]);
 		super.update(elapsed);
-		GlobalScriptManager.callOnScripts('onCustomSubstateUpdatePost', [name, elapsed]);
+		PlayState.instance.callOnScripts('onCustomSubstateUpdatePost', [name, elapsed]);
 	}
 
 	override function destroy()
 	{
-		GlobalScriptManager.callOnScripts('onCustomSubstateDestroy', [name]);
+		PlayState.instance.callOnScripts('onCustomSubstateDestroy', [name]);
 		instance = null;
 		name = 'unnamed';
-		currentState = null;
 
-		GlobalScriptManager.setOnHScript('customSubstate', null);
-		GlobalScriptManager.setOnHScript('customSubstateName', name);
+		PlayState.instance.setOnHScript('customSubstate', null);
+		PlayState.instance.setOnHScript('customSubstateName', name);
 		super.destroy();
 	}
 }
