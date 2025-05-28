@@ -1,9 +1,9 @@
 package debug;
 
+import openfl.filters.DropShadowFilter;
 import flixel.FlxG;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
-import openfl.system.System;
 
 /**
 	The FPS class provides an easy-to-use monitor to display
@@ -21,11 +21,14 @@ class FPSCounter extends TextField
 	**/
 	public var memoryMegas(get, never):Float;
 
+	public static var instance:FPSCounter = null;
+
 	@:noCompletion private var times:Array<Float>;
 
 	public function new(x:Float = 10, y:Float = 10, color:Int = 0x000000)
 	{
 		super();
+		instance = this;
 
 		this.x = x;
 		this.y = y;
@@ -33,7 +36,7 @@ class FPSCounter extends TextField
 		currentFPS = 0;
 		selectable = false;
 		mouseEnabled = false;
-		defaultTextFormat = new TextFormat(Paths.font("vcr.ttf"), 14, color);
+		defaultTextFormat = new TextFormat(Paths.font("vcr.ttf"), 16, color);
 		autoSize = LEFT;
 		multiline = true;
 		text = "FPS: ";

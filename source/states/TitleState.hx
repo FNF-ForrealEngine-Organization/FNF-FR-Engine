@@ -494,6 +494,8 @@ class TitleState extends MusicBeatState
 
 	private var sickBeats:Int = 0; //Basically curBeat but won't be skipped if you hold the tab or resize the screen
 	public static var closedState:Bool = false;
+	public var allowCustomIntro:Bool = false;
+
 	override function beatHit()
 	{
 		super.beatHit();
@@ -519,43 +521,45 @@ class TitleState extends MusicBeatState
 		if(!closedState)
 		{
 			sickBeats++;
-			switch (sickBeats)
-			{
-				case 1:
-					//FlxG.sound.music.stop();
-					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-					FlxG.sound.music.fadeIn(4, 0, 0.7);
-				case 2:
-					createCoolText(['Psych Engine by'], 40);
-				case 4:
-					addMoreText('Shadow Mario', 40);
-					addMoreText('Riveren', 40);
-				case 5:
-					deleteCoolText();
-				case 6:
-					createCoolText(['Not associated', 'with'], -40);
-				case 8:
-					addMoreText('newgrounds', -40);
-					ngSpr.visible = true;
-				case 9:
-					deleteCoolText();
-					ngSpr.visible = false;
-				case 10:
-					createCoolText([curWacky[0]]);
-				case 12:
-					addMoreText(curWacky[1]);
-				case 13:
-					deleteCoolText();
-				case 14:
-					addMoreText('Friday');
-				case 15:
-					addMoreText('Night');
-				case 16:
-					addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
+			if (!allowCustomIntro) {
+				switch (sickBeats)
+				{
+					case 1:
+						//FlxG.sound.music.stop();
+						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+						FlxG.sound.music.fadeIn(4, 0, 0.7);
+					case 2:
+						createCoolText(['Psych Engine by'], 40);
+					case 4:
+						addMoreText('Shadow Mario', 40);
+						addMoreText('Riveren', 40);
+					case 5:
+						deleteCoolText();
+					case 6:
+						createCoolText(['Not associated', 'with'], -40);
+					case 8:
+						addMoreText('newgrounds', -40);
+						ngSpr.visible = true;
+					case 9:
+						deleteCoolText();
+						ngSpr.visible = false;
+					case 10:
+						createCoolText([curWacky[0]]);
+					case 12:
+						addMoreText(curWacky[1]);
+					case 13:
+						deleteCoolText();
+					case 14:
+						addMoreText('Friday');
+					case 15:
+						addMoreText('Night');
+					case 16:
+						addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
 
-				case 17:
-					skipIntro();
-			}
+					case 17:
+						skipIntro();
+				}
+			} else {} // own custom intro eyy
 		}
 	}
 
