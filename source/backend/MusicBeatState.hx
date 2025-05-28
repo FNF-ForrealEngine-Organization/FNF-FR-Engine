@@ -32,6 +32,10 @@ class MusicBeatState extends FlxState
 
 	#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 	public function addTextToDebug(text:String, color:FlxColor) {
+		if (luaDebugGroup == null) {
+			luaDebugGroup = new FlxTypedGroup<psychlua.DebugLuaText>();
+			add(luaDebugGroup);
+		}
 		var newText:psychlua.DebugLuaText = luaDebugGroup.recycle(psychlua.DebugLuaText);
 		newText.text = text;
 		newText.color = color;
