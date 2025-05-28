@@ -1,4 +1,4 @@
-![Logo Forreal Engine](logo.png)
+<img src="logo.png" alt="Logo Forreal Engine" width="60%">
 
 A custom fork version of psych engine, come up with:
 - Scripted State, Sub State (Well Sub State is already there lmao)
