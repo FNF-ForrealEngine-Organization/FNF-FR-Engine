@@ -1,5 +1,6 @@
 package psychlua;
 
+import crowplexus.hscript.Interp.LocalVar;
 import flixel.FlxBasic;
 import objects.Character;
 import psychlua.LuaUtils;
@@ -80,6 +81,38 @@ class HScript extends Iris
 		}
 	}
 	#end
+
+	var locals(get, set):Map<String, LocalVar>;
+
+	function get_locals():Map<String, LocalVar>
+	{
+		var result:Map<String, LocalVar> = new Map();
+		@:privateAccess
+		for (key in interp.locals.keys())
+		{
+			result.set(key, {r: interp.locals.get(key).r, const: interp.locals.get(key).const});
+		}
+		return result;
+	}
+
+	function set_locals(local:Map<String, LocalVar>)
+	{
+		@:privateAccess
+		interp.locals = local;
+		return local;
+	}
+
+	public function getAll():Dynamic 
+	{
+		var balls:Dynamic = {};
+
+		for (i in locals.keys())
+			Reflect.setField(balls, i, get(i));
+		for (i in interp.variables.keys())
+			Reflect.setField(balls, i, get(i));
+
+		return balls;
+	}
 
 	public var origin:String;
 	override public function new(?parent:Dynamic, ?file:String, ?varsToBring:Any = null, ?manualRun:Bool = false)
@@ -353,6 +386,19 @@ class HScript extends Iris
 
 		set('createRuntimeShader', MusicBeatState.getState().createRuntimeShader);
 		set('initLuaShader', MusicBeatState.getState().initLuaShader);
+
+		set('addHaxeScript', function (scriptName:String) {
+        	#if MODS_ALLOWED
+        	var scriptToLoad:String = Paths.modFolders('$scriptName.hx');
+        	if(!FileSystem.exists(scriptToLoad))
+        	    scriptToLoad = Paths.getSharedPath('$scriptName.hx');
+        	#else
+        	var scriptToLoad:String = Paths.getSharedPath('$scriptName.hx');
+        	#end
+			var hscript:HScript = new HScript(null, scriptToLoad);
+			hscript.execute();
+			return hscript.getAll();
+		});
 	}
 
 	#if LUA_ALLOWED
