@@ -446,7 +446,8 @@ class FunkinLua {
 			{
 				if(group != null)
 				{
-					var groupOrArray:Dynamic = Reflect.getProperty(LuaUtils.getTargetInstance(), group);
+					var targetInstance = CustomSubstate.instance != null ? CustomSubstate.instance : LuaUtils.getTargetInstance();
+					var groupOrArray:Dynamic = Reflect.getProperty(targetInstance, group);
 					if(groupOrArray != null)
 					{
 						switch(Type.typeof(groupOrArray))
@@ -454,7 +455,8 @@ class FunkinLua {
 							case TClass(Array): //Is Array
 								return groupOrArray.indexOf(leObj);
 							default: //Is Group
-								return Reflect.getProperty(groupOrArray, 'members').indexOf(leObj); //Has to use a Reflect here because of FlxTypedSpriteGroup
+								if(Reflect.hasField(groupOrArray, 'members'))
+									return Reflect.getProperty(groupOrArray, 'members').indexOf(leObj);
 						}
 					}
 					else
@@ -464,7 +466,8 @@ class FunkinLua {
 					}
 				}
 				var groupOrArray:Dynamic = CustomSubstate.instance != null ? CustomSubstate.instance : LuaUtils.getTargetInstance();
-				return groupOrArray.members.indexOf(leObj);
+				if(groupOrArray != null && Reflect.hasField(groupOrArray, 'members'))
+					return groupOrArray.members.indexOf(leObj);
 			}
 			luaTrace('getObjectOrder: Object $obj doesn\'t exist!', false, false, FlxColor.RED);
 			return -1;
