@@ -90,18 +90,18 @@ class FunkinLua {
 
 		// Song/Week shit
 		set('curBpm', Conductor.bpm);
-		set('bpm', PlayState.SONG.bpm);
-		set('scrollSpeed', PlayState.SONG.speed);
+		if (PlayState.SONG != null) set('bpm', PlayState.SONG.bpm);
+		if (PlayState.SONG != null) set('scrollSpeed', PlayState.SONG.speed);
 		set('crochet', Conductor.crochet);
 		set('stepCrochet', Conductor.stepCrochet);
-		set('songLength', FlxG.sound.music.length);
-		set('songName', PlayState.SONG.song);
-		set('songPath', Paths.formatToSongPath(PlayState.SONG.song));
+		if (FlxG.sound.music != null) set('songLength', FlxG.sound.music.length);
+		if (PlayState.SONG != null) set('songName', PlayState.SONG.song);
+		if (PlayState.SONG != null) set('songPath', Paths.formatToSongPath(PlayState.SONG.song));
 		set('loadedSongName', Song.loadedSongName);
 		set('loadedSongPath', Paths.formatToSongPath(Song.loadedSongName));
 		set('chartPath', Song.chartPath);
 		set('startedCountdown', false);
-		set('curStage', PlayState.SONG.stage);
+		if (PlayState.SONG != null) set('curStage', PlayState.SONG.stage);
 
 		set('isStoryMode', PlayState.isStoryMode);
 		set('difficulty', PlayState.storyDifficulty);
@@ -112,7 +112,7 @@ class FunkinLua {
 		set('weekRaw', PlayState.storyWeek);
 		set('week', WeekData.weeksList[PlayState.storyWeek]);
 		set('seenCutscene', PlayState.seenCutscene);
-		set('hasVocals', PlayState.SONG.needsVoices);
+		if (PlayState.SONG != null) set('hasVocals', PlayState.SONG.needsVoices);
 
 		// Screen stuff
 		set('screenWidth', FlxG.width);

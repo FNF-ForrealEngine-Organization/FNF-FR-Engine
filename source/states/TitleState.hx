@@ -119,6 +119,8 @@ class TitleState extends MusicBeatState
 		if (!initialized && FlxG.sound.music == null)
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 
+		StateScriptHandler.callOnScripts("onStartIntro", []);
+
 		loadJsonData();
 		#if TITLE_SCREEN_EASTER_EGG easterEggData(); #end
 		Conductor.bpm = musicBPM;
@@ -204,7 +206,7 @@ class TitleState extends MusicBeatState
 		else
 			initialized = true;
 
-		// credGroup.add(credTextShit);
+		StateScriptHandler.callOnScripts("onStartIntroPost", []);
 	}
 
 	// JSON data

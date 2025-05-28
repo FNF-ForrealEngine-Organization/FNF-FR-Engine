@@ -29,7 +29,7 @@ class MusicBeatState extends FlxState
 
 	function setStateScript(?name:String) {
 		if (name == null)
-			StateScriptHandler.setState(Type.getClassName(Type.getClass(this)).split('').pop(), this);
+			StateScriptHandler.setState(Type.getClassName(Type.getClass(this)).split('.').pop(), this);
 		else
 			StateScriptHandler.setState(name, this);
 	}
