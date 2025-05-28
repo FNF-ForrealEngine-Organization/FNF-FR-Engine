@@ -10,6 +10,7 @@ class DeprecatedFunctions
 	public static function implement(funk:FunkinLua)
 	{
 		var lua:State = funk.lua;
+		var game = PlayState.instance;
 		// DEPRECATED, DONT MESS WITH THESE SHITS, ITS JUST THERE FOR BACKWARD COMPATIBILITY
 		Lua_helper.add_callback(lua, "addAnimationByIndicesLoop", function(obj:String, name:String, prefix:String, indices:String, framerate:Int = 24) {
 			FunkinLua.luaTrace("addAnimationByIndicesLoop is deprecated! Use addAnimationByIndices instead", false, true);
@@ -18,8 +19,8 @@ class DeprecatedFunctions
 
 		Lua_helper.add_callback(lua, "objectPlayAnimation", function(obj:String, name:String, forced:Bool = false, ?startFrame:Int = 0) {
 			FunkinLua.luaTrace("objectPlayAnimation is deprecated! Use playAnim instead", false, true);
-			if(PlayState.getLuaObject(obj) != null) {
-				PlayState.getLuaObject(obj).animation.play(name, forced, false, startFrame);
+			if(game.getLuaObject(obj) != null) {
+				game.getLuaObject(obj).animation.play(name, forced, false, startFrame);
 				return true;
 			}
 

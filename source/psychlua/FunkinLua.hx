@@ -1013,8 +1013,8 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "setScrollFactor", function(obj:String, scrollX:Float, scrollY:Float) {
-			if(PlayState.getLuaObject(obj) != null) {
-				PlayState.getLuaObject(obj).scrollFactor.set(scrollX, scrollY);
+			if(game.getLuaObject(obj) != null) {
+				game.getLuaObject(obj).scrollFactor.set(scrollX, scrollY);
 				return;
 			}
 
@@ -1039,8 +1039,8 @@ class FunkinLua {
 			}
 		});
 		Lua_helper.add_callback(lua, "setGraphicSize", function(obj:String, x:Float, y:Float = 0, updateHitbox:Bool = true) {
-			if(PlayState.getLuaObject(obj)!=null) {
-				var shit:FlxSprite = PlayState.getLuaObject(obj);
+			if(game.getLuaObject(obj)!=null) {
+				var shit:FlxSprite = game.getLuaObject(obj);
 				shit.setGraphicSize(x, y);
 				if(updateHitbox) shit.updateHitbox();
 				return;
@@ -1060,8 +1060,8 @@ class FunkinLua {
 			luaTrace('setGraphicSize: Couldnt find object: ' + obj, false, false, FlxColor.RED);
 		});
 		Lua_helper.add_callback(lua, "scaleObject", function(obj:String, x:Float, y:Float, updateHitbox:Bool = true) {
-			if(PlayState.getLuaObject(obj)!=null) {
-				var shit:FlxSprite = PlayState.getLuaObject(obj);
+			if(game.getLuaObject(obj)!=null) {
+				var shit:FlxSprite = game.getLuaObject(obj);
 				shit.scale.set(x, y);
 				if(updateHitbox) shit.updateHitbox();
 				return;
@@ -1081,8 +1081,8 @@ class FunkinLua {
 			luaTrace('scaleObject: Couldnt find object: ' + obj, false, false, FlxColor.RED);
 		});
 		Lua_helper.add_callback(lua, "updateHitbox", function(obj:String) {
-			if(PlayState.getLuaObject(obj)!=null) {
-				var shit:FlxSprite = PlayState.getLuaObject(obj);
+			if(game.getLuaObject(obj)!=null) {
+				var shit:FlxSprite = game.getLuaObject(obj);
 				shit.updateHitbox();
 				return;
 			}
@@ -1150,7 +1150,7 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "setObjectCamera", function(obj:String, camera:String = 'game') {
-			var real:FlxBasic = PlayState.getLuaObject(obj);
+			var real:FlxBasic = game.getLuaObject(obj);
 			if(real != null) {
 				real.cameras = [LuaUtils.cameraFromString(camera)];
 				return true;
@@ -1170,7 +1170,7 @@ class FunkinLua {
 			return false;
 		});
 		Lua_helper.add_callback(lua, "setBlendMode", function(obj:String, blend:String = '') {
-			var real:FlxSprite = PlayState.getLuaObject(obj);
+			var real:FlxSprite = game.getLuaObject(obj);
 			if(real != null) {
 				real.blend = LuaUtils.blendModeFromString(blend);
 				return true;
@@ -1190,7 +1190,7 @@ class FunkinLua {
 			return false;
 		});
 		Lua_helper.add_callback(lua, "screenCenter", function(obj:String, pos:String = 'xy') {
-			var spr:FlxObject = PlayState.getLuaObject(obj);
+			var spr:FlxObject = game.getLuaObject(obj);
 
 			if(spr==null){
 				var split:Array<String> = obj.split('.');
@@ -1222,7 +1222,7 @@ class FunkinLua {
 			var objectsArray:Array<FlxBasic> = [];
 			for (i in 0...namesArray.length)
 			{
-				var real:FlxBasic = PlayState.getLuaObject(namesArray[i]);
+				var real:FlxBasic = game.getLuaObject(namesArray[i]);
 				if(real != null)
 					objectsArray.push(real);
 				else

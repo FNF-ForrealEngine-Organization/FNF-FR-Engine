@@ -813,8 +813,12 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	public static function getLuaObject(tag:String):Dynamic
-		return MusicBeatState.getState().variables.get(tag);
+	public function getLuaObject(tag:String, text:Bool=true):FlxSprite {
+		#if LUA_ALLOWED
+		if(variables.exists(tag)) return variables.get(tag);
+		#end
+		return null;
+	}
 
 	function startCharacterPos(char:Character, ?gfCheck:Bool = false) {
 		if(gfCheck && char.curCharacter.startsWith('gf')) { //IF DAD IS GIRLFRIEND, HE GOES TO HER POSITION
