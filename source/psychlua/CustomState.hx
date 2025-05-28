@@ -15,7 +15,6 @@ class CustomState extends MusicBeatState {
         GlobalScriptManager.setStateScript(sillyName, this);
         super.create();
         
-        // Call onCreate after scripts are initialized
         GlobalScriptManager.create();
         GlobalScriptManager.createPost();
     }
