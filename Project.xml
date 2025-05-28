@@ -89,13 +89,6 @@
 		<assets path="assets/translations" rename="assets" exclude="*.mp3"  unless="web"/>
 	</section>
 
-	<section if="BASE_GAME_FILES">
-		<assets path="assets/base_game" rename="assets" exclude="*.ogg" if="web"/>
-		<assets path="assets/base_game" rename="assets" exclude="*.mp3"  unless="web"/>
-		<haxelib name="grig.audio" if="BASE_GAME_FILES"/>
-		<haxelib name="funkin.vis" if="BASE_GAME_FILES"/>
-	</section>
-
 	<define name="CHECK_FOR_UPDATES" if="desktop officialBuild"/>
 
 	<section if="MODS_ALLOWED">
@@ -123,6 +116,8 @@
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED" version="2.0.1"/>
 	<haxelib name="hxdiscord_rpc" version="1.2.4" if="DISCORD_ALLOWED"/>
 	<haxelib name="flxanimate"/>
+	<haxelib name="grig.audio" />
+	<haxelib name="funkin.vis" />
 
 	<!-- Disable Discord IO Thread -->
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />

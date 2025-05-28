@@ -177,6 +177,8 @@ class HScript extends Iris
 		#end
 		set('ShaderFilter', openfl.filters.ShaderFilter);
 		set('StringTools', StringTools);
+		set('AudioDisplay', objects.AudioDisplay);
+		set('SpectralAnalyzer', funkin.vis.dsp.SpectralAnalyzer);
 		#if flxanimate
 		set('FlxAnimate', FlxAnimate);
 		#end
@@ -348,6 +350,9 @@ class HScript extends Iris
 		set('Function_StopLua', LuaUtils.Function_StopLua); //doesnt do much cuz HScript has a lower priority than Lua
 		set('Function_StopHScript', LuaUtils.Function_StopHScript);
 		set('Function_StopAll', LuaUtils.Function_StopAll);
+
+		set('createRuntimeShader', MusicBeatState.getState().createRuntimeShader);
+		set('initLuaShader', MusicBeatState.getState().initLuaShader);
 	}
 
 	#if LUA_ALLOWED
