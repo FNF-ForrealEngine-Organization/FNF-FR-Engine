@@ -365,6 +365,26 @@ class HScript extends Iris
 				Iris.error(Printer.errorToString(e, false), this.interp.posInfos());
 			}
 		});
+
+		set('addHaxeScript', function (scriptName:String) {
+			try {
+				#if MODS_ALLOWED
+				var scriptToLoad:String = Paths.modFolders('$scriptName.hx');
+				if (!FileSystem.exists(scriptToLoad))
+					scriptToLoad = Paths.getSharedPath('$scriptName.hx');
+				#else
+				var scriptToLoad:String = Paths.getSharedPath('$scriptName.hx');
+				#end
+				var hscript:HScript = new HScript(null, scriptToLoad);
+				hscript.execute();
+				return hscript.getAll();
+			}
+			catch (e:IrisError) {
+				Iris.error(Printer.errorToString(e, false), this.interp.posInfos());
+				return null;
+			}
+		});
+
 		#if LUA_ALLOWED
 		set('parentLua', parentLua);
 		#else
@@ -386,19 +406,6 @@ class HScript extends Iris
 
 		set('createRuntimeShader', MusicBeatState.getState().createRuntimeShader);
 		set('initLuaShader', MusicBeatState.getState().initLuaShader);
-
-		set('addHaxeScript', function (scriptName:String) {
-        	#if MODS_ALLOWED
-        	var scriptToLoad:String = Paths.modFolders('$scriptName.hx');
-        	if(!FileSystem.exists(scriptToLoad))
-        	    scriptToLoad = Paths.getSharedPath('$scriptName.hx');
-        	#else
-        	var scriptToLoad:String = Paths.getSharedPath('$scriptName.hx');
-        	#end
-			var hscript:HScript = new HScript(null, scriptToLoad);
-			hscript.execute();
-			return hscript.getAll();
-		});
 	}
 
 	#if LUA_ALLOWED
