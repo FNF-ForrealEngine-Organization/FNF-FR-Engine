@@ -1,9 +1,5 @@
 package backend;
 
-import openfl.utils.Assets;
-
-import haxe.Json;
-
 typedef ModsList = {
 	enabled:Array<String>,
 	disabled:Array<String>,
@@ -28,7 +24,8 @@ class Mods
 		'weeks',
 		'fonts',
 		'scripts',
-		'achievements'
+		'achievements',
+		'states'
 	];
 
 	private static var globalMods:Array<String> = [];

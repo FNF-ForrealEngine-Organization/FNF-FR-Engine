@@ -4152,6 +4152,10 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		tab_group.add(btn);
 
 		btnY++;
+		btn += 20;
+		var btn:PsychUIButton = new PsychUIButton(btnX, btnY, '  Adjust Sustain', function(){});
+
+		btnY++;
 		btnY += 20;
 		var btn:PsychUIButton = new PsychUIButton(btnX, btnY, '  Clear All Notes', function()
 		{
