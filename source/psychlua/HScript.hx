@@ -102,16 +102,32 @@ class HScript extends Iris
 		return local;
 	}
 
-	public function getAll():Dynamic 
+	public function getAll():Dynamic
 	{
-		var balls:Dynamic = {};
+		var result:Dynamic = {};
 
-		for (i in locals.keys())
-			Reflect.setField(balls, i, get(i));
-		for (i in interp.variables.keys())
-			Reflect.setField(balls, i, get(i));
+		@:privateAccess
+		if (interp != null && interp.locals != null)
+		{
+			for (i in interp.locals.keys()) {
+				var value = get(i);
+				if (value != null)
+					Reflect.setField(result, i, value);
+			}
+		}
 
-		return balls;
+		if (interp != null && interp.variables != null)
+		{
+			for (i in interp.variables.keys()) {
+				if (!Reflect.hasField(result, i)) {
+					var value = get(i);
+					if (value != null)
+						Reflect.setField(result, i, value);
+				}
+			}
+		}
+
+		return result;
 	}
 
 	public var origin:String;
