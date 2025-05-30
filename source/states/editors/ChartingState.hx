@@ -4154,12 +4154,12 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 		btnY++;
 		btnY += 20;
-		var btn:PsychUIButton = new PsychUIButton(btnX, btnY, '  Adjust Sustain', function(){
+		var btn:PsychUIButton = new PsychUIButton(btnX, btnY, 'Adjust Sustain', function(){
 			upperBox.isMinimized = true;
 			upperBox.bg.visible = false;
 			openSubState(new BasePrompt(420, 200, "Change How Sustain Gain",
 				function(state:BasePrompt){                    
-					var ableSusStepper:PsychUINumericStepper = new PsychUINumericStepper(state.bg.x + 100, state.bg.y + 90, 0.1, Math.floor(ableSusPress)/1000, 0.1, 10, 2);
+					var ableSusStepper:PsychUINumericStepper = new PsychUINumericStepper(state.bg.x + 100, state.bg.y + 90, 0.1, 1, 0.1, 10, 2);
 					ableSusStepper.cameras = state.cameras;
 					ableSusStepper.onValueChange = function() {
 						ableSusPress = ableSusStepper.value;
@@ -4173,7 +4173,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 					state.add(btn);
 				}
 			));
-		});
+		}, btnWid);
 		tab_group.add(btn);
 
 		btnY++;
