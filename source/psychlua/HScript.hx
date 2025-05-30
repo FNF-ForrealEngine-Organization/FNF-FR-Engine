@@ -102,36 +102,16 @@ class HScript extends Iris
 		return local;
 	}
 
-	public function getAll():Dynamic
+	public function getAll():Dynamic 
 	{
-		if (interp == null) return null;
-		var result:Dynamic = {};
-		
-		// Force evaluation of all top-level variables
-		@:privateAccess
-		var declared:Map<String, Dynamic> = cast interp.declared;
-		for (name in declared.keys()) {
-			@:privateAccess
-			if (!interp.locals.exists(name)) {
-				try {
-					// This forces the variable to be evaluated and stored
-					var value = interp.expr(declared.get(name));
-					interp.variables.set(name, value);
-				} catch(e:Dynamic) {}
-			}
-		}
+		var balls:Dynamic = {};
 
-		// Now get everything from the variables map
-    	if (interp != null && interp.variables != null) {
-    	    for (key in interp.variables.keys()) {
-    	        var value = interp.variables.get(key);
-    	        if (value != null) {
-    	            Reflect.setField(result, key, value);
-    	        }
-    	    }
-    	}
-	
-    	return result;
+		for (i in locals.keys())
+			Reflect.setField(balls, i, get(i));
+		for (i in interp.variables.keys())
+			Reflect.setField(balls, i, get(i));
+
+		return balls;
 	}
 
 	public var origin:String;
