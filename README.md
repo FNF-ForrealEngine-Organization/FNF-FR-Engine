@@ -2,6 +2,8 @@
 
 A custom fork version of psych engine, come up with:
 - Scripted State, Sub State (Well Sub State is already there lmao)
+- Some new stuff on Charting State
+- Improved HScript a little bit
 
 ## Credits
 * Huy1234TH: Onwer of this Project
