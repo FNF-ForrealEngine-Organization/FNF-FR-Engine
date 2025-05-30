@@ -215,6 +215,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var vortexEnabled:Bool = false;
 	var waveformEnabled:Bool = false;
 	var waveformTarget:WaveformTarget = INST;
+	var ableSusPress:Float = 1;
 
 	override function create()
 	{
@@ -1495,8 +1496,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 			var qPress = FlxG.keys.justPressed.Q;
 			var ePress = FlxG.keys.justPressed.E;
-			var addSus = (FlxG.keys.pressed.SHIFT ? 4 : 1) * (Conductor.stepCrochet / 2);
-			if(qPress) addSus *= -1;
+			var addSus = (FlxG.keys.pressed.SHIFT ? ableSusPress * 2 : ableSusPress) * (Conductor.stepCrochet / 2);
+			if(qPress) addSus *= -ableSusPress;
 
 			if(qPress != ePress && selectedNotes.length != 1)
 				susLengthStepper.value += addSus;
@@ -4152,8 +4153,28 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		tab_group.add(btn);
 
 		btnY++;
-		btn += 20;
-		var btn:PsychUIButton = new PsychUIButton(btnX, btnY, '  Adjust Sustain', function(){});
+		btnY += 20;
+		var btn:PsychUIButton = new PsychUIButton(btnX, btnY, '  Adjust Sustain', function(){
+			upperBox.isMinimized = true;
+			upperBox.bg.visible = false;
+			openSubState(new BasePrompt(420, 200, "Change How Sustain Gain",
+				function(state:BasePrompt){                    
+					var ableSusStepper:PsychUINumericStepper = new PsychUINumericStepper(state.bg.x + 100, state.bg.y + 90, 0.1, Math.floor(ableSusPress)/1000, 0.1, 10, 2);
+					ableSusStepper.cameras = state.cameras;
+					ableSusStepper.onValueChange = function() {
+						ableSusPress = ableSusStepper.value;
+					}
+					state.add(ableSusStepper);
+					
+					var btn:PsychUIButton = new PsychUIButton(0, state.bg.y + 100, 'Cancel', state.close);
+					btn.cameras = state.cameras;
+					btn.screenCenter(X);
+					btn.x += 60;
+					state.add(btn);
+				}
+			));
+		});
+		tab_group.add(btn);
 
 		btnY++;
 		btnY += 20;

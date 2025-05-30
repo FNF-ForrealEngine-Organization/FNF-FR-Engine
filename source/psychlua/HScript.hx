@@ -95,23 +95,43 @@ class HScript extends Iris
 		return result;
 	}
 
-	function set_locals(local:Map<String, LocalVar>)
+	function set_locals(local:Map<String, LocalVar>) 
 	{
 		@:privateAccess
 		interp.locals = local;
 		return local;
 	}
 
-	public function getAll():Dynamic 
+	public function getAll():Dynamic
 	{
-		var balls:Dynamic = {};
+		if (interp == null) return null;
+		var result:Dynamic = {};
+		
+		// Force evaluation of all top-level variables
+		@:privateAccess
+		var declared:Map<String, Dynamic> = cast interp.declared;
+		for (name in declared.keys()) {
+			@:privateAccess
+			if (!interp.locals.exists(name)) {
+				try {
+					// This forces the variable to be evaluated and stored
+					var value = interp.expr(declared.get(name));
+					interp.variables.set(name, value);
+				} catch(e:Dynamic) {}
+			}
+		}
 
-		for (i in locals.keys())
-			Reflect.setField(balls, i, get(i));
-		for (i in interp.variables.keys())
-			Reflect.setField(balls, i, get(i));
-
-		return balls;
+		// Now get everything from the variables map
+    	if (interp != null && interp.variables != null) {
+    	    for (key in interp.variables.keys()) {
+    	        var value = interp.variables.get(key);
+    	        if (value != null) {
+    	            Reflect.setField(result, key, value);
+    	        }
+    	    }
+    	}
+	
+    	return result;
 	}
 
 	public var origin:String;
@@ -366,7 +386,7 @@ class HScript extends Iris
 			}
 		});
 
-		set('addHaxeScript', function (scriptName:String) {
+		set('addHaxeScript', function(scriptName:String) {
 			try {
 				#if MODS_ALLOWED
 				var scriptToLoad:String = Paths.modFolders('$scriptName.hx');
@@ -375,11 +395,13 @@ class HScript extends Iris
 				#else
 				var scriptToLoad:String = Paths.getSharedPath('$scriptName.hx');
 				#end
-				var hscript:HScript = new HScript(null, scriptToLoad);
+				
+				var hscript = new HScript(null, scriptToLoad);
 				hscript.execute();
+				hscript.getAll();
+				
 				return hscript.getAll();
-			}
-			catch (e:IrisError) {
+			} catch(e:IrisError) {
 				Iris.error(Printer.errorToString(e, false), this.interp.posInfos());
 				return null;
 			}
