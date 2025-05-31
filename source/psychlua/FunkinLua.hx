@@ -1550,7 +1550,17 @@ class FunkinLua {
 
 		Lua_helper.add_callback(lua, "debugPrint", function(text:Dynamic = '', color:String = 'WHITE') PlayState.instance.addTextToDebug(text, CoolUtil.colorFromString(color)));
 		Lua_helper.add_callback(lua, "switchState", function(name:String) {
-			FlxG.switchState(new CustomState(name));
+			var nameState:String = name;
+			var instance:Dynamic = Type.resolveClass(nameState);
+
+			if (instance != null)
+			{
+				MusicBeatState.switchState(Type.createInstance(instance, []));
+			}
+			else
+			{
+				MusicBeatState.switchState(new CustomState(nameState)); 
+			}
 		});
 
 		addLocalCallback("close", function() {
