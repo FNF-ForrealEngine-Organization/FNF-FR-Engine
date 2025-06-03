@@ -1,5 +1,6 @@
 package backend;
 
+import flxsvg.FlxSvgSprite;
 import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
