@@ -16,7 +16,7 @@ class SvgSpriteFunctions {
 			var leSvg:FlxSvgSprite = new FlxSvgSprite(x, y);
 			if(svg != null && svg.length > 0)
 			{
-				leSvg.loadSvg(Assets.getText(Paths.getPath('images/$svg.svg')));
+				leSvg.loadSvg(Paths.svg(svg));
 			}
 			MusicBeatState.getVariables().set(tag, leSvg);
 			leSvg.active = true;

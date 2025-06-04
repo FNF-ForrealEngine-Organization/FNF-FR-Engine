@@ -291,6 +291,15 @@ class Paths
 		#end
 	}
 
+	inline static public function svg(key:String) {
+		var svgKey:String = Language.getFileTranslation('$key');
+		#if MODS_ALLOWED
+		var file:String = modFolders('images/' + svgKey + '.svg');
+		if (FileSystem.exists(file)) return File.getContent(file);
+		#end
+		return Assets.getText('assets/images/$svgKey.svg');
+	}
+
 	inline static public function font(key:String)
 	{
 		var folderKey:String = Language.getFileTranslation('fonts/$key');
