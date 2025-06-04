@@ -11,7 +11,8 @@ class OptionsState extends MusicBeatState
 		'Adjust Delay and Combo',
 		'Graphics',
 		'Visuals',
-		'Gameplay'
+		'Gameplay',
+		'Capture'
 		#if TRANSLATIONS_ALLOWED , 'Language' #end
 	];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
@@ -34,6 +35,8 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
 				MusicBeatState.switchState(new options.NoteOffsetState());
+			case 'Capture':
+				openSubState(new options.CaptureSettingsSubState());
 			case 'Language':
 				openSubState(new options.LanguageSubState());
 		}
@@ -59,11 +62,19 @@ class OptionsState extends MusicBeatState
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
+		var spacing:Float = 70;
+		var totalHeight:Float = options.length * spacing;
+		var screenHeight:Float = FlxG.height - 100;
+		
+		if (totalHeight > screenHeight) {
+			spacing = screenHeight / options.length;
+		}
+
 		for (num => option in options)
 		{
 			var optionText:Alphabet = new Alphabet(0, 0, Language.getPhrase('options_$option', option), true);
 			optionText.screenCenter();
-			optionText.y += (92 * (num - (options.length / 2))) + 45;
+			optionText.y += (spacing * (num - (options.length / 2))) + 45;
 			grpOptions.add(optionText);
 		}
 

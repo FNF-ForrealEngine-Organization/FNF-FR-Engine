@@ -119,6 +119,7 @@
 	<haxelib name="grig.audio" />
 	<haxelib name="funkin.vis" />
 	<haxelib name="flxsvg" version="1.1.0" />
+	<haxelib name="flixel-screenshot-plugin" version="git" />
 
 	<!-- Disable Discord IO Thread -->
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />

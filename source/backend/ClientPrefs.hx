@@ -77,6 +77,11 @@ import states.TitleState;
 	public var discordRPC:Bool = true;
 	public var loadingScreen:Bool = true;
 	public var language:String = 'en-US';
+
+	// Capture
+	public var saveFormat:String = 'JPEG';
+	public var jpegQuality:Int = 80;
+	public var enableCapture:Bool = true;
 }
 
 class ClientPrefs {
@@ -106,7 +111,8 @@ class ClientPrefs {
 		'volume_down'	=> [NUMPADMINUS, MINUS],
 		
 		'debug_1'		=> [SEVEN],
-		'debug_2'		=> [EIGHT]
+		'debug_2'		=> [EIGHT],
+		'capture'       => [F2]
 	];
 	public static var gamepadBinds:Map<String, Array<FlxGamepadInputID>> = [
 		'note_up'		=> [DPAD_UP, Y],

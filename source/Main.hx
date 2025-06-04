@@ -1,5 +1,6 @@
 package;
 
+import flixel.addons.plugin.ScreenShotPlugin;
 #if android
 import android.content.Context;
 #end
@@ -179,6 +180,7 @@ class Main extends Sprite
 		FlxG.fixedTimestep = false;
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.keys.preventDefaultKeys = [TAB];
+		FlxG.plugins.add(new ScreenShotPlugin());
 		
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
