@@ -1,5 +1,6 @@
 package options;
 
+import flixel.addons.plugin.ScreenShotPlugin;
 import backend.InputFormatter;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.display.FlxGridOverlay;
@@ -44,7 +45,7 @@ class ControlsSubState extends MusicBeatSubstate
 		[false, 'Key 2', 'debug_2', 'Debug Key #2'],
 		[false],
 		[false, 'MISC'],
-		[false, 'Capture Key', 'capture']
+		[false, 'Capture', 'capture']
 	];
 	var curOptions:Array<Int>;
 	var curOptionsValid:Array<Int>;
@@ -286,6 +287,7 @@ class ControlsSubState extends MusicBeatSubstate
 			if(FlxG.keys.justPressed.ESCAPE || FlxG.gamepads.anyJustPressed(B))
 			{
 				close();
+				ScreenShotPlugin.screenshotKeys = ClientPrefs.keyBinds.get("capture");
 				return;
 			}
 			if(FlxG.keys.justPressed.CONTROL || FlxG.gamepads.anyJustPressed(LEFT_SHOULDER) || FlxG.gamepads.anyJustPressed(RIGHT_SHOULDER)) swapMode();

@@ -24,7 +24,7 @@ class CaptureSettingsSubState extends BaseOptionsMenu
 
 		var option:Option = new Option('JPEG Quality',
 			'Changes how quality the JPEG images will\nWork only on JPEG images type only!.',
-			'ratingOffset',
+			'jpegQuality',
 			INT);
 		option.displayFormat = '%v';
 		option.scrollSpeed = 10;

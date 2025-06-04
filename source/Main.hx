@@ -180,7 +180,7 @@ class Main extends Sprite
 		FlxG.fixedTimestep = false;
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.keys.preventDefaultKeys = [TAB];
-		FlxG.plugins.add(new ScreenShotPlugin());
+		if (ClientPrefs.data.enableCapture) FlxG.plugins.add(new ScreenShotPlugin());
 		
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
