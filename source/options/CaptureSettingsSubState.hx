@@ -37,13 +37,14 @@ class CaptureSettingsSubState extends BaseOptionsMenu
     }
 
     function onSaveFormatType()
-        ScreenShotPlugin.saveFormat = Reflect.getProperty(CustomFileFormatOption, ClientPrefs.data.saveFormat.toUpperCase());
+    {
+        switch (ClientPrefs.data.saveFormat) {
+            case "PNG": return ScreenShotPlugin.saveFormat = PNG;
+            case "JPEG": return ScreenShotPlugin.saveFormat = JPEG;
+        }
+        return ScreenShotPlugin.saveFormat = PNG; // default value
+    }
 
     function onChangeJPEGQuality()
         ScreenShotPlugin.jpegQuality = ClientPrefs.data.jpegQuality;
-}
-
-class CustomFileFormatOption {
-    public static var PNG:FileFormatOption = PNG;
-    public static var JPEG:FileFormatOption = JPEG;
 }
