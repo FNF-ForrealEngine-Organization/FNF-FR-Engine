@@ -100,35 +100,35 @@ class HScript extends Iris
 		@:privateAccess
 		interp.locals = local;
 		return local;
-	}
-
+	}    
+	
 	public function getAll():Dynamic
-	{
-		var result:Dynamic = {};
+    {
+        var result:Dynamic = {};
 
-		@:privateAccess
-		if (interp != null && interp.locals != null)
-		{
-			for (i in interp.locals.keys()) {
-				var value = get(i);
-				if (value != null)
-					Reflect.setField(result, i, value);
-			}
-		}
+        @:privateAccess
+        if (interp != null && interp.locals != null)
+        {
+            for (i in interp.locals.keys()) {
+                var value = interp.locals.get(i).r;
+                if (value != null)
+                    Reflect.setField(result, i, value);
+            }
+        }
 
-		if (interp != null && interp.variables != null)
-		{
-			for (i in interp.variables.keys()) {
-				if (!Reflect.hasField(result, i)) {
-					var value = get(i);
-					if (value != null)
-						Reflect.setField(result, i, value);
-				}
-			}
-		}
+        if (interp != null && interp.variables != null)
+        {
+            for (i in interp.variables.keys()) {
+                if (!Reflect.hasField(result, i)) {
+                    var value = interp.variables.get(i);
+                    if (value != null)
+                        Reflect.setField(result, i, value);
+                }
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 
 	public var origin:String;
 	override public function new(?parent:Dynamic, ?file:String, ?varsToBring:Any = null, ?manualRun:Bool = false)
