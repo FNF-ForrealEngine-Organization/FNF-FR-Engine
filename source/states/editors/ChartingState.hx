@@ -85,7 +85,9 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		['Change Scroll Speed', "Value 1: Scroll Speed Multiplier (1 is default)\nValue 2: Time it takes to change fully in seconds."],
 		['Set Property', "Value 1: Variable name\nValue 2: New value"],
 		['Play Sound', "Value 1: Sound file name\nValue 2: Volume (Default: 1), ranges from 0 to 1"],
-		['Change Camera Target', "Change the target of the camera, useful for some quick turn\nValue 1: Character to change (dad, bf, gf) - For make back to normal (normal, reset, none) \nValue 2: Speed of the camera (can be float)"]
+		['Change Camera Target', "Change the target of the camera, useful for some quick turn\nValue 1: Character to change (dad, bf, gf) - For make back to normal (normal, reset, none) \nValue 2: Speed of the camera (can be float)"],
+		['Camera Flash', "Flashing a camera\nValue 1: Color HEX for camera flash\nValue 2: How long the camera flash time should be"],
+		['Camera Fade', "Fade a camera\nValue 1: Color HEX for camera fade\nValue 2: How long the camera fade time should be"],
 	];
 	
 	public static var keysArray:Array<FlxKey> = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT]; //Used for Vortex Editor

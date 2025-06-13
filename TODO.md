@@ -1,4 +1,5 @@
 # To-do list for Forreal Engine (Update sometime)
+- [X] Custom State
 - [ ] Trail Note in Charting State
 - [X] Capture Screen
 - [ ] Psych mods 0.6.3 support

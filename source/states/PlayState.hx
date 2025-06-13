@@ -2321,6 +2321,12 @@ class PlayState extends MusicBeatState
 
 				if(flValue2 != null)
 					FlxG.camera.followLerp = 0.04 * flValue2;
+			case 'Camera Flash':
+				if (ClientPrefs.data.flashing) {
+					camGame.flash(FlxColor.fromString(value1), flValue2);
+				}
+			case 'Camera Fade':
+				camGame.fade(FlxColor.fromString(value1), flValue2);
 		}
 
 		stagesFunc(function(stage:BaseStage) stage.eventCalled(eventName, value1, value2, flValue1, flValue2, strumTime));
