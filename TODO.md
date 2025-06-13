@@ -4,6 +4,7 @@
 - [X] Added Some Event: Change Camera Target, Camera Fade, Camera Flash
 - [X] Capture Screen
 - [X] Discord RPC
+- [X] Fix the variable cannot access thought using `addHaxeScript`
 
 ## v0.1.0:
 - [X] Custom State

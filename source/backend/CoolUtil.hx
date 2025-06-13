@@ -1,14 +1,11 @@
 package backend;
 
-import openfl.utils.Assets;
-import lime.utils.Assets as LimeAssets;
-
 class CoolUtil
 {
 	public static function checkForUpdates(url:String = null):String {
 		if (url == null || url.length == 0)
-			url = "https://raw.githubusercontent.com/khuonghoanghuy/FNF-FR-Engine/main/gitVersion.txt";
-		var version:String = states.MainMenuState.psychEngineVersion.trim();
+			url = "https://raw.githubusercontent.com/khuonghoanghuy/FNF-FR-Engine/refs/heads/main/gitVersion.txt";
+		var version:String = states.MainMenuState.forrealEngineVersion.trim();
 		if(ClientPrefs.data.checkForUpdates) {
 			trace('checking for updates...');
 			var http = new haxe.Http(url);
