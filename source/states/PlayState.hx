@@ -2302,6 +2302,25 @@ class PlayState extends MusicBeatState
 			case 'Play Sound':
 				if(flValue2 == null) flValue2 = 1;
 				FlxG.sound.play(Paths.sound(value1), flValue2);
+			case 'Change Camera Target':
+				switch(value1.toLowerCase().trim())
+				{
+					case 'gf' | 'girlfriend':
+						moveCameraToGirlfriend();
+						isCameraOnForcedPos = true;
+					case 'bf' | 'boyfriend':
+						moveCamera(false);
+						isCameraOnForcedPos = true; 
+					case 'dad' | 'opponent':
+						moveCamera(true);
+						isCameraOnForcedPos = true;
+					case 'none' | 'normal' | 'reset':
+						isCameraOnForcedPos = false;
+						moveCameraSection();
+				}
+
+				if(flValue2 != null)
+					FlxG.camera.followLerp = 0.04 * flValue2;
 		}
 
 		stagesFunc(function(stage:BaseStage) stage.eventCalled(eventName, value1, value2, flValue1, flValue2, strumTime));

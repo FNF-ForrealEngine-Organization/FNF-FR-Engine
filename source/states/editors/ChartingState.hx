@@ -84,7 +84,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		['Change Character', "Value 1: Character to change (Dad, BF, GF)\nValue 2: New character's name"],
 		['Change Scroll Speed', "Value 1: Scroll Speed Multiplier (1 is default)\nValue 2: Time it takes to change fully in seconds."],
 		['Set Property', "Value 1: Variable name\nValue 2: New value"],
-		['Play Sound', "Value 1: Sound file name\nValue 2: Volume (Default: 1), ranges from 0 to 1"]
+		['Play Sound', "Value 1: Sound file name\nValue 2: Volume (Default: 1), ranges from 0 to 1"],
+		['Change Camera Target', "Change the target of the camera, useful for some quick turn\nValue 1: Character to change (dad, bf, gf) - For make back to normal (normal, reset, none) \nValue 2: Speed of the camera (can be float)"]
 	];
 	
 	public static var keysArray:Array<FlxKey> = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT]; //Used for Vortex Editor
@@ -357,7 +358,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			icon.y = iconY;
 			icon.alpha = 0.6;
 			icon.scrollFactor.set();
-			icon.scale.set(0.3, 0.3);
+			icon.scale.set(0.3 * FlxG.camera.zoom, 0.3 * FlxG.camera.zoom);
 			icon.updateHitbox();
 			icon.ID = i+1;
 			add(icon);
@@ -527,6 +528,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			"Ctrl + V - Paste Copied Notes",
 			"Ctrl + A - Select all in current Section",
 			"Ctrl + S - Quicksave",
+			"Ctrl + Q - Camera Zoom out (UI won't affect)",
+			"Ctrl + E - Camera Zoom in (UI won't affect)"
 		].join('\n');
 		fullTipText.screenCenter();
 		add(fullTipText);
@@ -990,9 +993,17 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				return;
 			}
 			else if(FlxG.keys.pressed.CONTROL && !isMovingNotes && (FlxG.keys.justPressed.Z || FlxG.keys.justPressed.Y || FlxG.keys.justPressed.X ||
-				FlxG.keys.justPressed.C || FlxG.keys.justPressed.V || FlxG.keys.justPressed.A || FlxG.keys.justPressed.S))
+				FlxG.keys.justPressed.C || FlxG.keys.justPressed.V || FlxG.keys.justPressed.A || FlxG.keys.justPressed.S || FlxG.keys.justPressed.Q || FlxG.keys.justPressed.E))
 			{
 				canContinue = false;
+				if(FlxG.keys.justPressed.Q) {
+					FlxG.camera.zoom -= 0.05;
+					if(FlxG.camera.zoom <= 0.5) FlxG.camera.zoom = 1.5;
+				} else if(FlxG.keys.justPressed.E) {
+					FlxG.camera.zoom += 0.05;
+					if(FlxG.camera.zoom >= 1.5) FlxG.camera.zoom = 0.5;
+				}
+
 				if(FlxG.keys.justPressed.Z)
 					undo();
 				else if(FlxG.keys.justPressed.Y)
