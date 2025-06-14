@@ -13,7 +13,8 @@ class OptionsState extends MusicBeatState
 		'Visuals',
 		'Gameplay',
 		'Capture'
-		#if TRANSLATIONS_ALLOWED , 'Language' #end
+		#if TRANSLATIONS_ALLOWED , 'Language', #end
+		'Reset Data'
 	];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
@@ -39,6 +40,8 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.CaptureSettingsSubState());
 			case 'Language':
 				openSubState(new options.LanguageSubState());
+			case 'Reset Data':
+				openSubState(new options.ResetDataSubState());
 		}
 	}
 
