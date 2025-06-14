@@ -231,9 +231,6 @@ class HScript extends Iris
 		#if flxanimate
 		set('FlxAnimate', FlxAnimate);
 		#end
-		#if flxsvg
-		set('FlxSvgSprite', flxsvg.FlxSvgSprite);
-		#end
 
 		// Functions & Variables
 		set('setVar', function(name:String, value:Dynamic) {

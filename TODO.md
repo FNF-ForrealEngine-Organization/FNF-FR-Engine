@@ -18,5 +18,3 @@
 ## Future Plan:
 - [ ] Trail Note in Charting State
 - [ ] Psych mods 0.6.3 support
-- [ ] SVG images added
-- [ ] GIF images added

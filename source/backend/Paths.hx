@@ -1,6 +1,5 @@
 package backend;
 
-import flxsvg.FlxSvgSprite;
 import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
@@ -289,15 +288,6 @@ class Paths
 		#else
 		return (OpenFlAssets.exists(path, TEXT)) ? Assets.getText(path) : null;
 		#end
-	}
-
-	inline static public function svg(key:String) {
-		var svgKey:String = Language.getFileTranslation('$key');
-		#if MODS_ALLOWED
-		var file:String = modFolders('images/' + svgKey + '.svg');
-		if (FileSystem.exists(file)) return File.getContent(file);
-		#end
-		return Assets.getText('assets/images/$svgKey.svg');
 	}
 
 	inline static public function font(key:String)
