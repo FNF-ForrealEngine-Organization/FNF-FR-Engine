@@ -3,7 +3,7 @@
 - [X] Fullscreen, Borderless Window screen
 - [X] Window Dark color
 - [X] New Event: Set Camera Zoom, Tween Camera Zoom
-- [ ] Added new options: Reset Data
+- [X] Added new options: Reset Data
 
 ## v0.2.0:
 - [X] Zoom in-out camera in Charting State
