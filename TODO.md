@@ -1,7 +1,7 @@
 # To-do list for Forreal Engine (Update sometime)
 ## v0.2.1:
 - [X] Fullscreen, Borderless Window screen
-- [ ] Window Dark color
+- [X] Window Dark color
 - [ ] New Event: Set Camera Zoom
 - [ ] Added new options: Reset Data
 

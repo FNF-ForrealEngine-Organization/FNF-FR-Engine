@@ -83,8 +83,11 @@ import states.TitleState;
 	public var jpegQuality:Int = 80;
 	public var enableCapture:Bool = true;
 
-	// Full screen
+	// Full screen - Window Stuff
 	public var fullscreenType:String = 'WINDOW';
+	#if windows
+	public var darkWindowMode:Bool = true;
+	#end
 }
 
 class ClientPrefs {

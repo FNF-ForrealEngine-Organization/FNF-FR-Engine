@@ -1,5 +1,6 @@
 package states;
 
+import backend.WindowMode;
 import psychlua.StateScriptHandler;
 
 import flixel.input.keyboard.FlxKey;
@@ -95,6 +96,10 @@ class TitleState extends MusicBeatState
 		{
 			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
 		}
+
+		#if windows
+		WindowMode.darkMode(ClientPrefs.data.darkWindowMode);
+		#end
 
 		FlxG.mouse.visible = false;
 		#if FREEPLAY

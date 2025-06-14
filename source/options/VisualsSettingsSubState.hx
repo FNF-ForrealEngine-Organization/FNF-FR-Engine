@@ -1,5 +1,6 @@
 package options;
 
+import backend.WindowMode;
 import objects.Note;
 import objects.StrumNote;
 import objects.NoteSplash;
@@ -159,6 +160,15 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 			'comboStacking',
 			BOOL);
 		addOption(option);
+
+		#if windows
+		var option:Option = new Option('Window Dark Mode',
+			"If unchecked, the window mode will become white as usual",
+			"darkWindowMode",
+			BOOL);
+		option.onChange = () -> WindowMode.darkMode(ClientPrefs.data.darkWindowMode);
+		addOption(option);
+		#end
 
 		super();
 		add(notes);
