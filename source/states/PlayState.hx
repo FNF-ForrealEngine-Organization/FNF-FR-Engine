@@ -2327,6 +2327,29 @@ class PlayState extends MusicBeatState
 				}
 			case 'Camera Fade':
 				camGame.fade(FlxColor.fromString(value1), flValue2);
+			case 'Set Camera Zoom':
+				defaultCamZoom = flValue1;
+			case 'Tween Camera Zoom':
+				var easeType:String = 'linear';
+				var duration:Float = 1.0;
+				if (flValue2 != null) {
+					var splitValue:Array<String> = Std.string(flValue2).split(',');
+					if (splitValue.length >= 1) duration = Std.parseFloat(splitValue[0]); 
+					if (splitValue.length >= 2) easeType = splitValue[1].trim();
+				}
+				
+				var ease:Float->Float = FlxEase.linear;
+				try {
+					ease = Reflect.field(FlxEase, easeType);
+					if (ease == null) ease = FlxEase.linear;
+				} catch(e) {}
+				
+				FlxTween.tween(camGame, {zoom: flValue1}, duration, {
+					ease: ease, 
+					onComplete: function (twn:FlxTween) {
+						defaultCamZoom = flValue1;
+					}
+				});
 		}
 
 		stagesFunc(function(stage:BaseStage) stage.eventCalled(eventName, value1, value2, flValue1, flValue2, strumTime));

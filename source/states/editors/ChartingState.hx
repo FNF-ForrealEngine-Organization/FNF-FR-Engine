@@ -88,6 +88,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		['Change Camera Target', "Change the target of the camera, useful for some quick turn\nValue 1: Character to change (dad, bf, gf) - For make back to normal (normal, reset, none) \nValue 2: Speed of the camera (can be float)"],
 		['Camera Flash', "Flashing a camera\nValue 1: Color HEX for camera flash\nValue 2: How long the camera flash time should be"],
 		['Camera Fade', "Fade a camera\nValue 1: Color HEX for camera fade\nValue 2: How long the camera fade time should be"],
+		['Set Camera Zoom', "Zoom the camera as the value want\nValue 1: The value will zoom\nValue 2: Nothing"],
+		['Tween Camera Zoom', "Zoom the camera with tween\nValue 1: The value will zoom\nValue 2: Duration the zoom camera and the ease type for tween\nwill can be used like '1,sineInOut' for example"]
 	];
 	
 	public static var keysArray:Array<FlxKey> = [ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT]; //Used for Vortex Editor
