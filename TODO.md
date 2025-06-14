@@ -3,6 +3,7 @@
 - [X] Fullscreen, Borderless Window screen
 - [ ] Window Dark color
 - [ ] New Event: Set Camera Zoom
+- [ ] Added new options: Reset Data
 
 ## v0.2.0:
 - [X] Zoom in-out camera in Charting State
