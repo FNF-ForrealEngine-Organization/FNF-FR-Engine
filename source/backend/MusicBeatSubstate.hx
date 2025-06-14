@@ -25,6 +25,21 @@ class MusicBeatSubstate extends FlxSubState
 	inline function get_controls():Controls
 		return Controls.instance;
 
+	override function create() {
+		super.create();
+
+		FlxG.signals.preUpdate.add(function () {
+			switch (ClientPrefs.data.fullscreenType.toLowerCase().trim()) {
+				case "fullscreen":
+					WindowMode.windowSet(true, false);
+				case "borderless":
+					WindowMode.windowSet(true, true);
+				case "window":
+					WindowMode.windowSet(false, false);
+			}
+		});
+	}
+
 	override function update(elapsed:Float)
 	{
 		//everyStep();

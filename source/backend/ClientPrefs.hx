@@ -82,6 +82,9 @@ import states.TitleState;
 	public var saveFormat:String = 'JPEG';
 	public var jpegQuality:Int = 80;
 	public var enableCapture:Bool = true;
+
+	// Full screen
+	public var fullscreenType:String = 'WINDOW';
 }
 
 class ClientPrefs {

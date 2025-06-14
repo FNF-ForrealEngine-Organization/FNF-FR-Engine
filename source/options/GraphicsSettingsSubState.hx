@@ -1,5 +1,6 @@
 package options;
 
+import backend.WindowMode;
 import objects.Character;
 
 class GraphicsSettingsSubState extends BaseOptionsMenu
@@ -60,6 +61,14 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		option.onChange = onChangeFramerate;
 		#end
 
+		var option:Option = new Option('Window Screen Mode',
+            'Default is window mode, borderless will also full screen the game.',
+            'fullscreenType',
+            STRING,
+            ['WINDOW', 'FULLSCREEN', 'BORDERLESS']);
+		option.onChange = onChangeWindowScreen;
+        addOption(option);
+
 		super();
 		insert(1, boyfriend);
 	}
@@ -93,5 +102,18 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 	{
 		super.changeSelection(change);
 		boyfriend.visible = (antialiasingOption == curSelected);
+	}
+
+	function onChangeWindowScreen() {
+		FlxG.signals.preUpdate.add(function () {
+			switch (ClientPrefs.data.fullscreenType.toLowerCase().trim()) {
+				case "fullscreen":
+					WindowMode.windowSet(true, false);
+				case "borderless":
+					WindowMode.windowSet(true, true);
+				case "window":
+					WindowMode.windowSet(false, false);
+			}
+		});
 	}
 }

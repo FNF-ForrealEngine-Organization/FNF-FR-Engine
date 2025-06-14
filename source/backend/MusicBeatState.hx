@@ -128,6 +128,17 @@ class MusicBeatState extends FlxState
 		timePassedOnState = 0;
 
 		StateScriptHandler.callOnScripts("onCreatePost", []);
+
+		FlxG.signals.preUpdate.add(function () {
+			switch (ClientPrefs.data.fullscreenType.toLowerCase().trim()) {
+				case "fullscreen":
+					WindowMode.windowSet(true, false);
+				case "borderless":
+					WindowMode.windowSet(true, true);
+				case "window":
+					WindowMode.windowSet(false, false);
+			}
+		});
 	}
 
 	public function initPsychCamera():PsychCamera

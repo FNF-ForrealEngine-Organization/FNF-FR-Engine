@@ -1,4 +1,9 @@
 # To-do list for Forreal Engine (Update sometime)
+## v0.2.1:
+- [X] Fullscreen, Borderless Window screen
+- [ ] Window Dark color
+- [ ] New Event: Set Camera Zoom
+
 ## v0.2.0:
 - [X] Zoom in-out camera in Charting State
 - [X] Added Some Event: Change Camera Target, Camera Fade, Camera Flash
