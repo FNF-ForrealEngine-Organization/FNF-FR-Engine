@@ -16,6 +16,17 @@ class OptionsState extends MusicBeatState
 		#if TRANSLATIONS_ALLOWED , 'Language', #end
 		'Reset Data'
 	];
+	var optionsDesc:Array<String> = [
+		"Change note colors",
+		"Change keybinds controls",
+		"Switch to the beat states to adjust the delay of the game offset",
+		"Recommended to check first if your PC can't handle something",
+		"Visual Setting are also recommended to check first",
+		"Gameplay can help you play as downscroll, middlescroll, adjust the offset of the rating combo",
+		"Adjust how capture work",
+		#if TRANSLATIONS_ALLOWED "Change the game languages", #end
+		"Reset the game data"
+	];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
@@ -47,6 +58,9 @@ class OptionsState extends MusicBeatState
 
 	var selectorLeft:Alphabet;
 	var selectorRight:Alphabet;
+
+	private var descBox:FlxSprite;
+	private var descText:FlxText;
 
 	override function create()
 	{
@@ -85,6 +99,16 @@ class OptionsState extends MusicBeatState
 		add(selectorLeft);
 		selectorRight = new Alphabet(0, 0, '<', true);
 		add(selectorRight);
+
+		descBox = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
+		descBox.alpha = 0.6;
+		add(descBox);
+
+		descText = new FlxText(50, 600, 1180, "", 32);
+		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText.scrollFactor.set();
+		descText.borderSize = 2.4;
+		add(descText);
 
 		changeSelection();
 		ClientPrefs.saveSettings();
@@ -140,6 +164,14 @@ class OptionsState extends MusicBeatState
 				selectorRight.y = item.y;
 			}
 		}
+
+		descText.text = optionsDesc[curSelected];
+		descText.screenCenter(Y);
+		descText.y += 270;
+
+		descBox.setPosition(descText.x - 10, descText.y - 10);
+		descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
+		descBox.updateHitbox();
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 	}
 

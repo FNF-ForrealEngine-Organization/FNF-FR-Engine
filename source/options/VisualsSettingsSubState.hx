@@ -163,7 +163,7 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 
 		#if windows
 		var option:Option = new Option('Window Dark Mode',
-			"If unchecked, the window mode will become white as usual",
+			"If unchecked, the window mode will become white as usual.",
 			"darkWindowMode",
 			BOOL);
 		option.onChange = () -> WindowMode.darkMode(ClientPrefs.data.darkWindowMode);
