@@ -1,4 +1,9 @@
 # To-do list for Forreal Engine (Update sometime)
+## v0.2.2:
+- [ ] FPS counter can be changing thought `instance` var
+- [ ] Place note will play a sound (can be disable thought options)
+- [ ] Optione menu will now have a description for each options select
+
 ## v0.2.1:
 - [X] Fullscreen, Borderless Window screen
 - [X] Window Dark color
