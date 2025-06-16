@@ -1,8 +1,10 @@
 # To-do list for Forreal Engine (Update sometime)
-## v0.2.2:
+## v0.3.0:
 - [X] FPS counter can be changing thought `instance` var
 - [X] Optione menu will now have a description for each options select
-- [ ] Added Auto Update (can be disable thought options)
+- [X] Fix the check for update is missing :sob:
+- [X] Fix the video not played
+- [ ] New Trail Note in Charting State
 
 ## v0.2.1:
 - [X] Fullscreen, Borderless Window screen
@@ -21,5 +23,4 @@
 - [X] Custom State
 
 ## Future Plan:
-- [ ] Trail Note in Charting State
 - [ ] Psych mods 0.6.3 support
