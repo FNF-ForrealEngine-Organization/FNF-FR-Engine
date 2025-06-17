@@ -4,9 +4,7 @@
 - [X] Optione menu will now have a description for each options select
 - [X] Fix the check for update is missing :sob:
 - [X] Fix the video not played
-- [ ] New Trail Note in Charting State
 - [X] New Shaders: Dynamic Shadow
-- [ ] Add skip dialogue, cutscene by hold ENTER key (can be disable, change key thoughts options)
 
 ## v0.2.1:
 - [X] Fullscreen, Borderless Window screen
@@ -25,4 +23,5 @@
 - [X] Custom State
 
 ## Future Plan:
+- [ ] New Trail Note in Charting State
 - [ ] Psych mods 0.6.3 support
