@@ -1,5 +1,6 @@
 package debug;
 
+import states.MainMenuState;
 import flixel.FlxG;
 import openfl.Lib;
 import haxe.Timer;
